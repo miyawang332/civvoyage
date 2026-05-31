@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>世界文明时间图谱</title>
+  <style>
+    :root{--bg:#05070d;--bg2:#090d17;--panel:rgba(12,16,28,.74);--panel2:rgba(16,22,36,.9);--ink:#f4efe6;--muted:#9c9488;--line:rgba(230,210,170,.16);--gold:#d8b66a;--leftAxis:94px;--colW:104px;--topPad:86px;--bottomPad:100px;--visibleCols:12}*{box-sizing:border-box}html,body{margin:0;-webkit-user-select:none;user-select:none;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(135,104,56,.18),transparent 34%),radial-gradient(circle at 80% 70%,rgba(73,89,140,.13),transparent 32%),linear-gradient(180deg,#03050a,#090d17 48%,#05070d);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{position:relative;width:100vw;height:100vh;overflow:hidden}.topbar{position:absolute;left:22px;right:22px;top:18px;height:72px;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(16,22,36,.72),rgba(7,10,18,.58));backdrop-filter:blur(18px);box-shadow:0 20px 80px rgba(0,0,0,.32)}.brand{display:flex;align-items:center;gap:12px}.brandText{display:flex;flex-direction:column;justify-content:center}.brand h1{margin:0;font-size:24px;letter-spacing:-.05em;font-weight:850}.logo{width:64px;height:64px;border-radius:0;object-fit:cover;flex:0 0 auto;box-shadow:none}.brandRow{display:flex;align-items:center}.brandRow{display:flex;align-items:center;gap:12px}.langSelect{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:var(--ink);padding:7px 9px;outline:none;font-weight:760}.langSelect option{background:#101624;color:#f4efe6}.brand p{margin:4px 0 0;color:var(--muted);font-size:12px;letter-spacing:.08em}.tools{display:flex;align-items:center;gap:10px}.search,.yearInput{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.06);color:var(--ink);outline:none;padding:11px 13px}.search{width:285px}.yearInput{width:108px}.seg{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.04)}.zoomControl{display:flex;align-items:center;gap:9px;padding:7px 10px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.04);color:var(--muted);font-size:12px}.zoomControl input{width:150px;accent-color:var(--gold)}.zoomControl b{min-width:48px;color:var(--ink);font-size:12px}button{border:0;border-radius:12px;padding:9px 12px;background:rgba(255,255,255,.07);color:var(--ink);font-weight:760;cursor:pointer;transition:.16s ease}button:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}button.active{background:var(--gold);color:#171008}.hiddenMenu{position:relative}.hiddenPanel{display:none;position:absolute;right:0;top:42px;min-width:210px;border:1px solid var(--line);border-radius:16px;background:rgba(10,13,23,.96);box-shadow:0 22px 70px rgba(0,0,0,.45);padding:8px;z-index:80}.hiddenMenu.open .hiddenPanel{display:block}.hiddenItem{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;color:var(--muted);font-size:13px}.hiddenItem:hover{background:rgba(255,255,255,.07);color:var(--ink)}.stage{position:absolute;left:22px;right:22px;top:106px;bottom:24px;border:1px solid var(--line);border-radius:30px;background:linear-gradient(180deg,rgba(10,14,24,.78),rgba(4,6,11,.72));box-shadow:inset 0 0 120px rgba(216,182,106,.05),0 28px 100px rgba(0,0,0,.4);overflow:hidden}.stage:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);background-size:42px 42px;opacity:.08}.scroll{position:absolute;inset:0;overflow:auto}.chart{position:relative;min-width:calc(var(--leftAxis) + var(--visibleCols) * var(--colW) + 80px);height:1200px;background:linear-gradient(90deg,rgba(216,182,106,.12) 0 1px,transparent 1px) var(--leftAxis) 0/var(--colW) 100%,linear-gradient(180deg,rgba(216,182,106,.12) 0 1px,transparent 1px) 0 var(--topPad)/100% 44px}.regions{position:sticky;top:0;left:0;z-index:130;height:var(--topPad);display:flex;padding-left:var(--leftAxis);background:linear-gradient(180deg,rgba(7,10,18,.98),rgba(7,10,18,.94));border-bottom:1px solid var(--line);backdrop-filter:blur(16px);box-shadow:0 18px 38px rgba(0,0,0,.38)}.regionGroup{display:flex;flex-direction:column;border-right:1px solid rgba(216,182,106,.18)}.regionBand{height:30px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:12px;font-weight:850;letter-spacing:.08em;border-bottom:1px solid rgba(216,182,106,.14);background:rgba(216,182,106,.055);cursor:pointer}.countryRow{display:flex;height:calc(var(--topPad) - 30px)}.region{position:relative;width:var(--colW);padding:20px 8px 8px;border-right:1px solid rgba(216,182,106,.10);cursor:pointer;text-align:center;display:flex;align-items:flex-start;justify-content:center;gap:5px}.region:hover,.regionBand:hover{background:rgba(216,182,106,.10)}.region b{display:block;font-size:13px;font-weight:820;line-height:1.12;white-space:pre-line}.flag{display:inline-block;font-size:15px;line-height:1}.region em{position:absolute;right:7px;top:7px;font-style:normal;color:rgba(244,239,230,.34);font-size:11px}.axis{position:absolute;left:0;top:0;width:var(--leftAxis);height:100%;z-index:12;border-right:1px solid var(--line);background:linear-gradient(90deg,rgba(7,10,18,.88),rgba(7,10,18,.44))}.axis:before{content:"";position:sticky;top:0;display:block;height:var(--topPad);background:rgba(7,10,18,.98);border-bottom:1px solid var(--line);z-index:2}.tick{position:absolute;left:0;width:100%;border-top:1px solid rgba(216,182,106,.18);color:rgba(244,239,230,.58);font-size:11px;padding-left:12px;transform:translateY(-1px)}.block{position:absolute;border-radius:14px;padding:8px 10px;overflow:hidden;border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 30px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.18);cursor:pointer;transition:.18s ease;z-index:5}.block:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 42%,rgba(0,0,0,.12));pointer-events:none}.block:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 0 0 1px rgba(255,255,255,.22),0 18px 44px rgba(0,0,0,.36),0 0 32px var(--glow);z-index:40}.block.partial{border-style:dashed}.block.partial:after{content:"局部";position:absolute;right:7px;bottom:5px;font-size:9px;opacity:.5;font-weight:900}.block.hit{outline:2px solid rgba(255,255,255,.96);transform:translateY(-3px) scale(1.035);filter:saturate(1.28) brightness(1.12);box-shadow:0 0 0 2px rgba(255,255,255,.92),0 0 0 7px rgba(216,182,106,.52),0 18px 48px rgba(0,0,0,.45),0 0 54px rgba(216,182,106,.9)!important}.block.activeAtYear{box-shadow:0 0 0 2px rgba(255,255,255,.66),0 0 0 5px rgba(216,182,106,.34),0 0 34px var(--glow);z-index:35}.block .label{position:relative;font-weight:850;font-size:12.5px;line-height:1.12;text-shadow:0 1px 6px rgba(0,0,0,.32)}.block .label small{font-size:9px;opacity:.62;font-weight:800}.block .years{position:relative;margin-top:5px;font-size:10px;opacity:.82}.eventLayer{position:absolute;left:0;right:0;top:0;z-index:100;pointer-events:none}.eventCard{position:absolute;border:1px solid rgba(216,182,106,.34);border-radius:13px;padding:7px 10px;background:linear-gradient(180deg,rgba(245,236,214,.94),rgba(226,211,181,.88));box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 18px rgba(216,182,106,.14);backdrop-filter:blur(10px);color:#21170d;overflow:hidden}.eventCard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(150,106,42,.75)}.eventYear{font-size:10px;font-weight:800;color:#846233;letter-spacing:.03em;opacity:.82}.eventText{margin-top:3px;font-size:12px;line-height:1.34;color:#2d2218;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.yearLine{position:absolute;left:0;right:0;height:0;border-top:1px solid rgba(255,235,176,.95);box-shadow:0 0 18px rgba(216,182,106,.7);z-index:115;cursor:ns-resize}.yearLine:before{content:"";position:absolute;left:var(--leftAxis);right:20px;top:-12px;height:24px;background:linear-gradient(90deg,transparent,rgba(216,182,106,.10),transparent)}.yearHandle{position:absolute;left:12px;top:-18px;background:linear-gradient(180deg,#f0d58d,#b78a34);color:#120d06;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900;white-space:nowrap;box-shadow:0 10px 28px rgba(0,0,0,.4)}.drawer{position:absolute;top:106px;right:22px;bottom:24px;width:390px;z-index:140;transform:translateX(calc(100% + 32px));transition:transform .22s ease;border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(16,22,36,.94),rgba(8,11,20,.94));backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.45);overflow:hidden}.drawer.open{transform:translateX(0)}.drawerTab{position:absolute;right:22px;top:50%;transform:translateY(-50%);z-index:130;writing-mode:vertical-rl;letter-spacing:.18em;border:1px solid var(--line);border-radius:16px;padding:14px 10px;background:rgba(16,22,36,.86);color:var(--gold);cursor:pointer}.drawerHead{display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid var(--line)}.drawerHead b{font-size:15px}.drawerBody{padding:18px;overflow:auto;height:calc(100% - 58px)}.drawer h2{margin:0 0 8px;font-size:24px;letter-spacing:-.05em}.meta{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:14px}.desc{color:#d8d0c3;font-size:13px;line-height:1.65}.secTitle{margin:22px 0 10px;color:var(--gold);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:850}.activeList{display:flex;flex-direction:column;gap:9px}.item{padding:10px 11px;border:1px solid rgba(216,182,106,.14);border-radius:14px;background:rgba(255,255,255,.045)}.item b{font-size:13px}.item span{display:block;color:var(--muted);font-size:12px;margin-top:4px;line-height:1.38}.floatInfo{position:absolute;left:116px;bottom:18px;z-index:55;padding:10px 13px;border:1px solid var(--line);border-radius:16px;background:rgba(7,10,18,.72);backdrop-filter:blur(14px);color:var(--muted);font-size:12px}.empty{color:var(--muted);font-size:13px;line-height:1.6}.searchPanel{display:none;position:absolute;top:96px;right:620px;width:360px;max-height:430px;overflow:auto;z-index:160;border:1px solid var(--line);border-radius:18px;background:rgba(8,12,22,.96);backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(0,0,0,.5);padding:9px}.searchPanel.open{display:block}.resultGroup{padding:7px 8px;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.resultItem{padding:10px 11px;border-radius:13px;cursor:pointer;border:1px solid transparent}.resultItem:hover{background:rgba(255,255,255,.07);border-color:rgba(216,182,106,.18)}.resultItem b{display:block;font-size:13px}.resultItem span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}@media(max-width:1100px){.search{width:180px}.drawer{width:340px}.topbar{left:12px;right:12px}.tools{gap:6px}.stage{left:12px;right:12px}.brand p{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar"><div class="brand"><img class="logo" src="assets/logo.png" alt="CivVoyage logo"><div class="brandText"><div class="brandRow"><h1 id="appTitle">文明行旅</h1></div><p id="appSubtitle">在一张图中观察 5000 年文明的并行、扩张与更替</p></div></div><div class="tools"><input id="search" class="search" placeholder="搜索文明/历史人物：罗马 / 汉朝 / 孔子"><div class="zoomControl"><span>视野</span><input id="zoomSlider" type="range" min="10" max="5000" step="10" value="2000"><b id="zoomLabel">2000年</b></div><input id="yearInput" class="yearInput" value="-500" style="display:none"><button onclick="jumpYearFromInput()" style="display:none">定位</button><div class="hiddenMenu" id="hiddenMenu"><button onclick="toggleHiddenMenu()">隐藏国家 <span id="hiddenCount">0</span></button><div class="hiddenPanel" id="hiddenPanel"></div></div><button onclick="resetView()" style="display:none">重置</button><select id="langSelect" class="langSelect"><option value="zh">中文</option><option value="en">English</option></select></div></header><div id="searchPanel" class="searchPanel"></div>
+  <main class="stage"><div id="scroll" class="scroll"><div id="chart" class="chart"><div id="axis" class="axis"></div><div id="regions" class="regions"></div><div id="blocks"></div><div id="eventLayer" class="eventLayer"></div><div id="yearLine" class="yearLine"><div id="yearHandle" class="yearHandle">公元前500年前后</div></div></div></div><div class="floatInfo" id="floatInfo">拖动年份横切线，查看同一时期的世界文明。点击国家表头可隐藏该列，点击地区表头可隐藏整个地区。</div></main>
+  <div class="drawerTab" onclick="toggleDrawer(true)">详情</div><aside class="drawer" id="drawer"><div class="drawerHead"><b>文明详情与同期横切</b><button onclick="toggleDrawer(false)">关闭</button></div><div class="drawerBody"><div id="detail"><div class="empty">点击任意文明色块查看详情；拖动年份线查看同期文明。</div></div><div class="secTitle">该时期存在的文明</div><div class="activeList" id="activeList"></div></div></aside>
+</div>
+<script>
+const MIN=-3600,MAX=2020;const regions=[
+{id:'east_asia',name:'东亚',countries:[{id:'japan',flag:'🇯🇵',name:'日本',examples:'弥生 / 幕府 / 近代'},{id:'korea',display:'🇰🇷 韩国\n🇰🇵 朝鲜',name:'韩国/朝鲜',examples:'三国 / 高丽 / 朝鲜王朝'},{id:'china',flag:'🇨🇳',name:'中国',examples:'夏商周 / 秦汉 / 唐宋元明清'}]},
+{id:'inner_asia',name:'内亚草原',countries:[{id:'mongolia',flag:'🇲🇳',name:'蒙古',examples:'匈奴 / 突厥 / 蒙古'}]},
+{id:'southeast_asia',name:'东南亚',countries:[{id:'vietnam',flag:'🇻🇳',name:'越南',examples:'大越 / 黎朝 / 阮朝'},{id:'cambodia',flag:'🇰🇭',name:'柬埔寨',examples:'扶南 / 真腊 / 高棉'},{id:'indonesia',flag:'🇮🇩',name:'印尼',examples:'室利佛逝 / 满者伯夷'}]},
+{id:'south_asia',name:'南亚',countries:[{id:'india',flag:'🇮🇳',name:'印度',examples:'印度河 / 孔雀 / 莫卧儿'}]},
+{id:'central_asia_region',name:'中亚',countries:[{id:'central_asia',flag:'🌐',name:'中亚',examples:'粟特 / 河中 / 中亚汗国'}]},
+{id:'middle_east',name:'中东/西亚',countries:[{id:'iran',flag:'🇮🇷',name:'伊朗',examples:'波斯 / 帕提亚 / 萨珊'},{id:'iraq',flag:'🇮🇶',name:'伊拉克',examples:'苏美尔 / 巴比伦 / 亚述'},{id:'turkey',flag:'🇹🇷',name:'土耳其',examples:'赫梯 / 塞尔柱 / 奥斯曼'},{id:'arabia',flag:'🇸🇦',name:'阿拉伯',examples:'伊斯兰兴起 / 阿拉伯帝国'}]},
+{id:'north_africa',name:'北非',countries:[{id:'egypt',flag:'🇪🇬',name:'埃及',examples:'古埃及 / 托勒密 / 法蒂玛'}]},
+{id:'europe',name:'欧洲',countries:[{id:'greece',flag:'🇬🇷',name:'希腊',examples:'米诺斯 / 古希腊 / 拜占庭'},{id:'italy',flag:'🇮🇹',name:'意大利',examples:'罗马 / 文艺复兴'},{id:'france',flag:'🇫🇷',name:'法国',examples:'法兰克 / 法国王权'},{id:'britain',flag:'🇬🇧',name:'英国',examples:'英格兰 / 大英帝国'},{id:'germany',flag:'🇩🇪',name:'德国',examples:'神圣罗马 / 普鲁士 / 德国'},{id:'russia',flag:'🇷🇺',name:'俄罗斯',examples:'基辅罗斯 / 俄罗斯帝国'}]},
+{id:'africa',name:'非洲',countries:[{id:'ethiopia',flag:'🇪🇹',name:'埃塞俄比亚',examples:'阿克苏姆 / 埃塞俄比亚帝国'},{id:'mali',flag:'🇲🇱',name:'马里',examples:'加纳 / 马里 / 桑海'}]},
+{id:'mexico',flag:'🇲🇽',name:'美洲',countries:[{id:'mexico',flag:'🇲🇽',name:'墨西哥',examples:'奥尔梅克 / 玛雅 / 阿兹特克'},{id:'peru',flag:'🇵🇪',name:'秘鲁',examples:'查文 / 印加'},{id:'usa',flag:'🇺🇸',name:'美国',examples:'殖民北美 / 美国'}]}
+]
+const civilizations=[
+{id:'china',flag:'🇨🇳',name:'中华文明',color:'#d64a3a',segments:[
+{label:'夏朝',start:-2070,end:-1600,columns:['china'],summary:'中国早期王朝传统的开端，青铜时代和礼制雏形。'},
+{label:'商朝',start:-1600,end:-1046,columns:['china'],summary:'甲骨文、青铜礼器和王权祭祀体系成熟。'},
+{label:'西周',start:-1046,end:-771,columns:['china'],summary:'分封制和礼乐制度奠定东亚政治文化基础。'},
+{label:'春秋',start:-770,end:-476,columns:['china'],summary:'诸侯争霸、礼崩乐坏，思想变革开始。'},
+{label:'战国',start:-475,end:-221,columns:['china'],summary:'兼并战争与制度改革，法家、儒家、道家等百家争鸣。'},
+{label:'秦朝',start:-221,end:-207,columns:['china'],summary:'首次建立中央集权大一统帝国。'},
+{label:'西汉',start:-202,end:9,columns:['china'],summary:'儒家制度化、丝绸之路开通，与罗马大致同时期。'},
+{label:'新朝',start:9,end:23,columns:['china'],summary:'王莽改制，短暂中断汉代政治连续性。'},
+{label:'东汉',start:25,end:220,columns:['china'],summary:'汉帝国延续，后期豪强、宦官与外戚政治加剧。'},
+{label:'三国',start:220,end:280,columns:['china'],summary:'魏蜀吴鼎立，东亚进入分裂竞争时期。'},
+{label:'西晋',start:266,end:316,columns:['china'],summary:'短暂统一后迅速走向内乱。'},
+{label:'东晋十六国',start:317,end:420,columns:['china'],summary:'南北分裂，北方游牧与汉地政权交错；此处作为中国本土历史阶段显示，不用跨列表示文化/族群影响。'},
+{label:'南北朝',start:420,end:589,columns:['china'],summary:'南北长期对峙，民族融合和佛教传播加速；此处不跨蒙古列，避免把影响误读为完全合并。'},
+{label:'隋朝',start:581,end:618,columns:['china'],summary:'重新统一中国，开创大运河和科举制度基础。'},
+{label:'唐朝',start:618,end:907,columns:['china'],summary:'开放帝国，影响东亚和内亚，长安成为世界性都市。'},
+{label:'五代十国',start:907,end:979,columns:['china'],summary:'唐后分裂时期，北方五代与南方十国并存。'},
+{label:'辽',start:916,end:1125,columns:['mongolia','china'],coverage:{china:.42},coverageSide:{china:'right'},summary:'契丹建立的草原—农耕复合政权；对中国北部以部分占领方式表达。'},
+{label:'北宋',start:960,end:1127,columns:['china'],summary:'商业、城市和文官制度高度发展。'},
+{label:'西夏',start:1038,end:1227,columns:['china','mongolia'],coverage:{china:.32},coverageSide:{china:'right'},summary:'党项政权，处于宋辽金和内亚交通之间；以中国西北局部占领显示。'},
+{label:'金',start:1115,end:1234,columns:['china','mongolia'],coverage:{china:.52},coverageSide:{china:'right'},summary:'女真政权，占据华北并与南宋对峙；以中国北方部分占领显示。'},
+{label:'南宋',start:1127,end:1279,columns:['china'],summary:'南方经济和海上贸易高度繁荣。'},
+{label:'元朝',start:1271,end:1368,columns:['china','mongolia','central_asia'],summary:'蒙古帝国东部的中国王朝形态，连接欧亚交流。'},
+{label:'明朝',start:1368,end:1644,columns:['china'],summary:'恢复汉地王朝秩序，海禁与朝贡体系并存。'},
+{label:'清朝',start:1636,end:1912,columns:['china','mongolia','central_asia'],summary:'满洲建立的多民族帝国，整合东亚与内亚。'},
+{label:'中华民国',start:1912,end:1949,columns:['china'],summary:'共和转型、战争与现代国家建设。'},
+{label:'中华人民共和国',start:1949,end:2020,columns:['china'],summary:'现代中国国家形态与工业化、全球化进程。'}]},
+{id:'japan_korea',name:'日本与朝鲜',color:'#e06a55',segments:[
+{label:'弥生时代',start:-300,end:250,columns:['japan'],summary:'水稻农业、金属器和聚落等级化发展；日本列岛主线从此阶段开始呈现，避免把史前文化误读为早于所有文明的国家文明。'},
+{label:'古坟时代',start:250,end:538,columns:['japan'],summary:'大和政权和古坟文化形成。'},
+{label:'飞鸟时代',start:538,end:710,columns:['japan'],summary:'佛教传入、律令制度和中央集权化开始。'},
+{label:'奈良时代',start:710,end:794,columns:['japan'],summary:'平城京和律令国家成熟。'},
+{label:'平安时代',start:794,end:1185,columns:['japan'],summary:'贵族文化和武士阶层兴起。'},
+{label:'镰仓幕府',start:1185,end:1333,columns:['japan'],summary:'武家政权建立。'},
+{label:'室町幕府',start:1336,end:1573,columns:['japan'],summary:'足利幕府、守护大名和战国时代前奏。'},
+{label:'战国安土桃山',start:1467,end:1603,columns:['japan'],coverage:{japan:.55},coverageSide:{japan:'right'},color:'#df745d',summary:'大名割据、统一战争和织丰政权；与室町末期重叠，用半宽显示为并行/过渡势力。'},
+{label:'江户幕府',start:1603,end:1868,columns:['japan'],summary:'德川幕府长期稳定和锁国体制。'},
+{label:'明治日本',start:1868,end:1912,columns:['japan'],summary:'近代国家建设和工业化。'},
+{label:'近现代日本',start:1912,end:2020,columns:['japan'],summary:'帝国扩张、战后重建和现代国家发展。'},
+{label:'三国时代',start:-57,end:668,columns:['korea'],summary:'高句丽、百济、新罗竞争。'},
+{label:'统一新罗/渤海',start:668,end:935,columns:['korea'],summary:'半岛南部统一新罗与北方渤海并存。'},
+{label:'高丽王朝',start:918,end:1392,columns:['korea'],summary:'佛教文化和半岛国家制度发展。'},
+{label:'朝鲜王朝',start:1392,end:1897,columns:['korea'],summary:'儒家国家体制和韩文创制。'},
+{label:'大韩帝国/殖民期',start:1897,end:1945,columns:['korea'],summary:'近代转型与日本殖民统治时期。'},
+{label:'现代朝韩',start:1948,end:2020,columns:['korea'],summary:'半岛分裂后的现代国家格局。'}]},
+{id:'rome',name:'罗马与地中海',color:'#3478c8',segments:[
+{label:'米诺斯文明',start:-2700,end:-1450,columns:['greece'],summary:'爱琴海早期宫殿文明。'},
+{label:'迈锡尼文明',start:-1600,end:-1100,columns:['greece'],summary:'希腊青铜时代晚期文明。'},
+{label:'古希腊城邦',start:-800,end:-146,columns:['greece'],summary:'城邦政治、哲学、戏剧和古典艺术。'},
+{label:'马其顿帝国',start:-336,end:-323,columns:['greece','turkey','iran','iraq','egypt','central_asia'],summary:'亚历山大东征开启希腊化世界。'},
+{label:'希腊化诸国',start:-323,end:-30,columns:['greece','turkey','iraq','egypt'],summary:'托勒密、塞琉古等王国延续希腊化文化。'},
+{label:'罗马共和国',start:-509,end:-27,columns:['italy'],summary:'从意大利城邦扩张为地中海强权。'},
+{label:'罗马帝国',start:-27,end:395,columns:['italy','france','britain','greece','egypt','turkey'],summary:'地中海世界进入罗马主导时期。'},
+{label:'西罗马帝国',start:395,end:476,columns:['italy','france'],summary:'西部帝国在迁徙和内外压力中瓦解；埃及属于东部帝国体系，不再画入西罗马。'},
+{label:'拜占庭帝国',start:395,end:1453,columns:['greece','turkey'],summary:'东罗马延续，连接古典与中世纪世界。'}]},
+{id:'middle_east',name:'两河波斯与伊斯兰',color:'#35a27d',segments:[
+{label:'苏美尔城邦',start:-3500,end:-2000,columns:['iraq'],summary:'城市、文字和早期国家兴起。'},
+{label:'阿卡德帝国',start:-2334,end:-2154,columns:['iraq'],summary:'两河流域早期帝国。'},
+{label:'古巴比伦',start:-1894,end:-1595,columns:['iraq'],summary:'汉谟拉比法典和巴比伦王权。'},
+{label:'赫梯帝国',start:-1650,end:-1180,columns:['turkey'],summary:'安纳托利亚青铜时代强权。'},
+{label:'亚述帝国',start:-1365,end:-609,columns:['iraq'],summary:'以军事和行政控制著称的新亚述帝国。'},
+{label:'新巴比伦',start:-626,end:-539,columns:['iraq'],summary:'巴比伦复兴与尼布甲尼撒时代。'},
+{label:'阿契美尼德波斯',start:-550,end:-330,columns:['iran','iraq','central_asia','egypt'],summary:'横跨西亚、中亚和埃及的大帝国。'},
+{label:'帕提亚帝国',start:-247,end:224,columns:['iran','iraq','central_asia'],summary:'伊朗高原强权，与罗马长期对峙。'},
+{label:'萨珊波斯',start:224,end:651,columns:['iran','iraq','central_asia'],summary:'晚期古代伊朗帝国。'},
+{label:'阿拉伯帝国',start:632,end:1258,columns:['arabia','iraq','iran','egypt','central_asia'],summary:'伊斯兰扩张与黄金时代。'},
+{label:'塞尔柱帝国',start:1037,end:1194,columns:['turkey','iran','iraq','central_asia'],summary:'突厥伊斯兰政权兴起。'},
+{label:'奥斯曼帝国',start:1299,end:1922,columns:['turkey','iraq','egypt','greece'],summary:'连接欧亚非的伊斯兰帝国。'}]},
+{id:'india',flag:'🇮🇳',name:'南亚文明',color:'#e28a3b',segments:[
+{label:'印度河文明',start:-2600,end:-1900,columns:['india'],summary:'南亚早期城市文明。'},
+{label:'吠陀时期',start:-1500,end:-600,columns:['india'],summary:'雅利安文化、祭祀传统和社会结构形成。'},
+{label:'十六大国',start:-600,end:-322,columns:['india'],summary:'早期国家竞争，佛教和耆那教兴起。'},
+{label:'孔雀王朝',start:-322,end:-185,columns:['india','central_asia'],summary:'南亚第一个大型帝国。'},
+{label:'贵霜帝国',start:30,end:375,columns:['india','central_asia'],coverage:{india:.46},coverageSide:{india:'left'},color:'#d87935',summary:'连接印度、中亚和丝路的帝国；在印度列以局部宽度显示，避免与笈多初期完全覆盖。'},
+{label:'笈多王朝',start:320,end:550,columns:['india'],summary:'古典印度文化繁荣时期。'},
+{label:'戒日王朝',start:606,end:647,columns:['india'],summary:'北印度短暂统一。'},
+{label:'德里苏丹国',start:1206,end:1526,columns:['india'],summary:'伊斯兰政权进入南亚；其统治主体在印度列呈现，不因族源或文化联系跨入中亚。'},
+{label:'莫卧儿帝国',start:1526,end:1857,columns:['india'],summary:'南亚近世大型帝国；作为印度本土统治阶段显示，不把中亚渊源画成占领。'},
+{label:'英属印度',start:1858,end:1947,columns:['india'],summary:'英国殖民统治下的南亚；作为印度本地历史阶段显示，不与英国连成跨洲色块。'}]},
+{id:'mongolia',flag:'🇲🇳',name:'内亚草原',color:'#8b6fc9',segments:[
+{label:'斯基泰',start:-900,end:-200,columns:['mongolia','russia'],summary:'欧亚草原早期游牧文化圈。'},
+{label:'匈奴',start:-209,end:48,columns:['mongolia'],summary:'内亚草原早期强权；与汉朝长期对峙，但不画入中国列，避免把边境冲突误读为占领合并。'},
+{label:'鲜卑与柔然',start:100,end:552,columns:['mongolia'],summary:'东部草原政权更替；此处作为草原主线显示，不用跨入中国列表达影响。'},
+{label:'突厥汗国',start:552,end:744,columns:['mongolia','central_asia'],summary:'横跨欧亚草原的突厥势力。'},
+{label:'回鹘汗国',start:744,end:840,columns:['mongolia','central_asia'],summary:'草原与丝路贸易联系。'},
+{label:'契丹辽',start:916,end:1125,columns:['mongolia','china'],coverage:{china:.22},coverageSide:{china:'right'},summary:'草原—农耕复合政权；对燕云等北方局部地区用中国列边缘窄条表示，不占满中国列。'},
+{label:'蒙古帝国',start:1206,end:1368,columns:['china','mongolia','central_asia','iran','iraq','russia'],coverage:{china:.55,russia:.45},coverageSide:{china:'right',russia:'left'},summary:'横跨欧亚大陆的大规模帝国扩张；对中国、俄罗斯等边缘区域用部分占领宽度表达，避免误读为整列完全合并。'},
+{label:'金帐汗国',start:1242,end:1502,columns:['mongolia','russia'],summary:'蒙古西部汗国影响东欧草原。'}]},
+{id:'europe',name:'欧洲中世纪与近代',color:'#c99a2e',segments:[
+{label:'凯尔特与日耳曼部族',start:-500,end:500,columns:['france','germany'],summary:'罗马边界之外的西欧和中欧族群。'},
+{label:'法兰克王国',start:481,end:843,columns:['france','germany'],summary:'西欧中世纪政治结构形成。'},
+{label:'加洛林帝国',start:800,end:888,columns:['france','germany','italy'],summary:'查理曼帝国短暂统一西欧与中欧。'},
+{label:'英格兰王国',start:927,end:1707,columns:['britain'],summary:'英格兰王权形成并逐步扩展。'},
+{label:'基辅罗斯',start:882,end:1240,columns:['russia'],summary:'东斯拉夫早期国家。'},
+{label:'莫斯科公国',start:1283,end:1547,columns:['russia'],summary:'东北罗斯崛起并统一周边。'},
+{label:'俄罗斯沙皇国',start:1547,end:1721,columns:['russia'],summary:'沙皇体制与向欧亚大陆扩张。'},
+{label:'神圣罗马帝国',start:962,end:1806,columns:['germany','france','italy'],coverage:{france:.35,italy:.35},coverageSide:{france:'right',italy:'left'},summary:'中欧长期政治共同体；法国、意大利仅显示边缘/局部关系。'},
+{label:'法国王权国家',start:987,end:1792,columns:['france'],summary:'卡佩、瓦卢瓦与波旁王朝推动法国国家形成。'},
+{label:'英国/大不列颠',start:1707,end:2020,columns:['britain'],summary:'联合王国形成后的英国历史主线。'},
+{label:'西属/葡属美洲',start:1492,end:1825,columns:['mexico','peru'],summary:'欧洲殖民在美洲形成的本地殖民社会阶段，不与欧洲本土连成跨洲色块。'},
+{label:'大英帝国本土',start:1600,end:1947,columns:['britain'],summary:'英国海权与帝国中心；殖民地另在当地列中表达，避免跨越未统治地区。'},
+{label:'俄罗斯帝国',start:1721,end:1917,columns:['russia','central_asia'],summary:'俄罗斯帝国及其向中亚的实际扩张；非连续列分段显示。'}]},
+{id:'africa',name:'非洲文明',color:'#be6b8f',segments:[
+{label:'古埃及',start:-3100,end:-332,columns:['egypt'],summary:'尼罗河流域古代文明。'},
+{label:'库施王国',start:-1070,end:350,columns:['egypt','ethiopia'],coverage:{egypt:.52},coverageSide:{egypt:'right'},color:'#c6789e',summary:'尼罗河上游王国；与埃及交织但不等于长期占满埃及本土，用埃及列半宽表达。'},
+{label:'迦太基',start:-814,end:-146,columns:['egypt','italy'],coverage:{egypt:.52,italy:.52},coverageSide:{egypt:'left',italy:'left'},color:'#b85f88',summary:'北非西部海上强权；因不新增马格里布列，暂以埃及/意大利边缘半宽色块表达，不代表占满埃及或意大利。'}, 
+{label:'阿克苏姆',start:100,end:940,columns:['ethiopia'],summary:'东非贸易和基督教王国。'},
+{label:'加纳帝国',start:300,end:1200,columns:['mali'],summary:'西非黄金贸易早期强权。'},
+{label:'马里帝国',start:1235,end:1670,columns:['mali'],summary:'西非黄金贸易和伊斯兰文化中心。'},
+{label:'桑海帝国',start:1464,end:1591,columns:['mali'],summary:'西非尼日尔河流域强权。'},
+{label:'埃塞俄比亚帝国',start:1270,end:1974,columns:['ethiopia'],summary:'东非高原长期王国传统。'}]},
+{id:'mexico',flag:'🇲🇽',name:'美洲文明',color:'#5b8c5a',segments:[
+{label:'奥尔梅克文明',start:-1500,end:-400,columns:['mexico'],coverage:{mexico:.48},coverageSide:{mexico:'left'},color:'#659c62',summary:'中美洲早期文明；作为墨西哥列内的区域文明，用半宽显示。'},
+{label:'玛雅文明',start:-2000,end:1500,columns:['mexico'],coverage:{mexico:.58},coverageSide:{mexico:'right'},color:'#4f8d54',summary:'中美洲城市、历法和文字传统；长期延续但不占满整个墨西哥列。'},
+{label:'特奥蒂瓦坎',start:-100,end:550,columns:['mexico'],coverage:{mexico:.46},coverageSide:{mexico:'left'},color:'#6ca86a',summary:'中美洲大型城市文明；与玛雅并行，用另一侧半宽显示。'},
+{label:'托尔特克',start:900,end:1168,columns:['mexico'],coverage:{mexico:.48},coverageSide:{mexico:'left'},color:'#78a957',summary:'中美洲后古典时期强权；不占满整个墨西哥列。'},
+{label:'阿兹特克帝国',start:1428,end:1521,columns:['mexico'],coverage:{mexico:.55},coverageSide:{mexico:'left'},color:'#6f9f4d',summary:'墨西哥高原帝国；与晚期玛雅等区域传统并存，用局部宽度表达。'},
+{label:'新西班牙',start:1521,end:1821,columns:['mexico'],summary:'西班牙殖民统治下的墨西哥地区。'},
+{label:'墨西哥',start:1821,end:2020,columns:['mexico'],summary:'墨西哥独立后的现代国家。'},
+{label:'查文文化',start:-900,end:-200,columns:['peru'],summary:'安第斯早期宗教文化中心。'},
+{label:'莫切/纳斯卡',start:100,end:800,columns:['peru'],coverage:{peru:.48},coverageSide:{peru:'left'},color:'#6aa260',summary:'安第斯北岸与南岸区域文化发展；用局部宽度表达并行区域文化。'},
+{label:'瓦里/蒂亚瓦纳科',start:500,end:1000,columns:['peru'],coverage:{peru:.48},coverageSide:{peru:'right'},color:'#5b9656',summary:'安第斯中期区域整合；与莫切/纳斯卡后期有交织，分侧显示。'},
+{label:'印加帝国',start:1438,end:1533,columns:['peru'],summary:'安第斯山区大型帝国。'},
+{label:'秘鲁殖民地',start:1533,end:1821,columns:['peru'],summary:'西班牙殖民统治下的秘鲁总督辖区。'},
+{label:'秘鲁',start:1821,end:2020,columns:['peru'],summary:'秘鲁独立后的现代国家。'},
+{label:'殖民北美',start:1607,end:1776,columns:['usa'],summary:'英法等欧洲殖民者在北美建立殖民社会，作为北美本地阶段显示。'},
+{label:'美国',start:1776,end:2020,columns:['usa'],summary:'美国独立后形成的现代国家及其全球影响。'}]},
+{id:'seasia',name:'东南亚文明',color:'#cf7b3a',segments:[
+{label:'扶南',start:100,end:550,columns:['cambodia'],summary:'早期印度化国家。'},
+{label:'真腊',start:550,end:802,columns:['cambodia'],summary:'高棉帝国前身。'},
+{label:'高棉帝国',start:802,end:1431,columns:['cambodia'],summary:'吴哥文明和东南亚强权。'},
+{label:'室利佛逝',start:650,end:1377,columns:['indonesia'],summary:'海上贸易王国。'},
+{label:'蒲甘王朝',start:849,end:1297,columns:['cambodia'],summary:'缅甸早期统一王朝。'},
+{label:'大越',start:939,end:1800,columns:['vietnam'],summary:'越南国家形成与扩张。'},
+{label:'暹罗王国',start:1238,end:1767,columns:['cambodia'],summary:'泰族国家兴起。'},
+{label:'满者伯夷',start:1293,end:1527,columns:['indonesia'],summary:'爪哇海上帝国。'}]}
+];
+const defaultHiddenCountries=['central_asia','vietnam','cambodia','mali','indonesia'];let zoomWindow=2000,pxPerYear=650/2000,currentYear=-500,hidden=new Set(defaultHiddenCountries),searchTerm='',selected=null,activeSegmentLabel=null,activeFigure=null,searchResults=[];const chart=document.getElementById('chart'),scrollEl=document.getElementById('scroll'),regionsEl=document.getElementById('regions'),blocksEl=document.getElementById('blocks'),axis=document.getElementById('axis'),yearLine=document.getElementById('yearLine'),yearHandle=document.getElementById('yearHandle'),eventLayer=document.getElementById('eventLayer');
+function allCountries(){return regions.flatMap(g=>g.countries.map(c=>({...c,regionId:g.id,regionName:g.name})))}
+function visibleCountries(){return allCountries().filter(c=>!hidden.has(c.id))}
+function countryName(id){if(currentLang==='en')return countryEn[id]||id;return allCountries().find(c=>c.id===id)?.name||id}
+const geoNames={japan:'日本列岛',korea:'朝鲜半岛',china:'中国及东亚大陆',mongolia:'欧亚草原东部',vietnam:'越南及中南半岛东部',cambodia:'柬埔寨及湄公河流域',indonesia:'印度尼西亚群岛和海上东南亚',india:'南亚次大陆',central_asia:'中亚河中与草原绿洲地带',iran:'伊朗高原',iraq:'两河流域（今伊拉克一带）',turkey:'安纳托利亚及小亚细亚',arabia:'阿拉伯半岛',egypt:'尼罗河流域及埃及',greece:'希腊与爱琴海世界',italy:'意大利半岛',france:'西欧法兰西地区',britain:'不列颠群岛',germany:'中欧德意志地区',russia:'东欧与俄罗斯平原',ethiopia:'东非高原',mali:'西非尼日尔河流域',mexico:'中美洲及墨西哥高原',peru:'安第斯山区',usa:'北美大陆'};
+function locationText(s){const geo=currentLang==='en'?geoNamesEn:geoNames;const names=s.columns.map(c=>geo[c]||countryName(c));if(currentLang==='en'){if(names.length===1)return `Located in ${names[0]}`;return `Originated in ${names[0]}, and extended or influenced ${names.slice(1).join(', ')}`}if(names.length===1)return `位于${names[0]}`;return `起源于${names[0]}，并扩展或影响至${names.slice(1).join('、')}`}
+const detailNotes={
+'古巴比伦':'古巴比伦王国兴起于两河流域中南部，以巴比伦城为中心。汉谟拉比在位时完成区域统一，并以《汉谟拉比法典》闻名，体现了早期国家治理、法律书写和王权秩序。它承接苏美尔、阿卡德传统，是古代西亚城市文明的重要阶段。',
+'春秋':'春秋时期是西周礼制瓦解后诸侯竞争的阶段。周王室权威下降，齐、晋、楚、秦等强国先后称霸，区域政治、军事和外交格局迅速变化。孔子等思想家生活在这一时期，后来的儒家、法家等思想传统也在这种社会转型中孕育。',
+'罗马帝国':'罗马帝国由共和国晚期的扩张和内战转化而来，奥古斯都建立元首制后，罗马长期控制地中海世界。帝国以道路、城市、军团、法律和行政体系维系统治，拉丁文化、罗马法和基督教传播对欧洲、中东和北非产生深远影响。',
+'蒙古帝国':'蒙古帝国由成吉思汗统一草原诸部后建立，并在13世纪迅速扩张为横跨欧亚的帝国网络。它通过军事征服、驿站交通和汗国体系连接中国、中亚、伊朗与东欧，同时也造成大规模战争破坏和区域政权重组。',
+'古埃及':'古埃及文明依托尼罗河定期泛滥形成农业和国家组织，发展出法老王权、象形文字、金字塔、神庙和复杂宗教体系。它长期保持独特文化连续性，并与努比亚、黎凡特、地中海世界发生贸易、战争与文化交流。',
+'库施王国':'库施王国位于尼罗河上游的努比亚地区，长期与埃及相邻并相互影响。它曾吸收埃及宗教、王权和文字传统，也一度北上统治埃及，形成第二十五王朝。库施体现了尼罗河文明圈中埃及以南的重要政治和文化力量。',
+'迦太基':'迦太基由腓尼基移民在北非建立，位于今突尼斯一带，依靠海上贸易和殖民网络成长为西地中海强权。它与希腊城邦、罗马长期竞争，尤其在布匿战争中与罗马争夺地中海霸权，最终被罗马摧毁。'
+};
+const figureRows=`
+孔子|孔丘,Confucius|-551|-479|-500|春秋|鲁国陬邑|思想家、教育家|儒家学派奠基者，影响东亚政治伦理与教育传统。
+老子|李耳,Laozi|-571|-471|-500|春秋|楚国苦县|思想家|道家传统核心人物，《道德经》所代表的思想深刻影响中国哲学。
+孙武|孙子,Sun Tzu|-545|-470|-510|春秋|齐国或吴国|军事思想家|《孙子兵法》作者，系统总结战争、战略与谋略思想。
+墨子|墨翟,Mozi|-470|-391|-430|战国|鲁国或宋国|思想家|墨家创始人，主张兼爱、非攻、尚贤和节用。
+孟子|孟轲,Mencius|-372|-289|-320|战国|邹国|思想家|儒家代表人物，发展性善论和仁政思想。
+庄子|庄周,Zhuangzi|-369|-286|-320|战国|宋国蒙|思想家、文学家|道家重要人物，以寓言和逍遥思想著称。
+荀子|荀况,Xunzi|-313|-238|-260|战国|赵国|思想家|儒家重要思想家，主张性恶论和礼法秩序。
+韩非|韩非子,Han Fei|-280|-233|-250|战国|韩国|思想家|法家集大成者，强调法、术、势与君主集权。
+屈原|Qu Yuan|-340|-278|-300|战国|楚国丹阳|诗人、政治家|楚辞代表人物，中国浪漫主义文学传统的重要源头。
+商鞅|公孙鞅|-390|-338|-356|战国|卫国|改革家|主持秦国变法，奠定秦统一六国的制度基础。
+秦始皇|嬴政,始皇帝|-259|-210|-221|秦朝|赵国邯郸|君主|秦朝建立者，中国历史上第一位皇帝，完成统一并推行中央集权制度。
+李斯|李通古|-284|-208|-221|秦朝|楚国上蔡|政治家|秦朝丞相，参与统一制度、文字和行政体系建设。
+项羽|西楚霸王|-232|-202|-206|秦朝|下相|军事统帅|秦末起义领袖，楚汉战争中的重要军事人物。
+刘邦|汉高祖|-256|-195|-202|西汉|沛县丰邑|君主|西汉开国皇帝，建立汉初政治秩序。
+萧何||-257|-193|-202|西汉|沛县|政治家|汉初丞相，负责制度、律令和后勤体系建设。
+张良||-250|-186|-206|西汉|韩国旧地|谋略家|汉初重要谋臣，辅佐刘邦取得楚汉战争胜利。
+韩信||-231|-196|-205|西汉|淮阴|军事统帅|汉初名将，组织多次决定性战役。
+司马迁|太史公|-145|-86|-100|西汉|夏阳|史学家、文学家|《史记》作者，开创纪传体通史传统。
+董仲舒||-179|-104|-135|西汉|广川|思想家|推动儒学与汉代国家意识形态结合。
+汉武帝|刘彻|-156|-87|-120|西汉|长安|君主|西汉重要皇帝，加强中央集权并开拓边疆。
+张骞||-164|-114|-130|西汉|汉中成固|外交家、探险者|出使西域，推动丝绸之路形成。
+班超||32|102|73|东汉|扶风安陵|军事家、外交家|经营西域，恢复汉朝在中亚交通线影响。
+班固||32|92|80|东汉|扶风安陵|史学家|《汉书》主要作者，确立断代史写作范式。
+蔡伦||50|121|105|东汉|桂阳|发明家、官员|改进造纸术，对书写传播产生深远影响。
+张衡||78|139|120|东汉|南阳西鄂|科学家、文学家|在天文学、地震仪和文学方面均有贡献。
+曹操|魏武帝|155|220|200|三国|沛国谯县|政治家、军事家、文学家|统一北方并奠定曹魏基础。
+刘备|汉昭烈帝|161|223|221|三国|涿郡涿县|君主|蜀汉建立者，三国政治格局核心人物。
+孙权|吴大帝|182|252|229|三国|吴郡富春|君主|东吴建立者，经营江东并参与三国鼎立。
+诸葛亮|孔明|181|234|225|三国|琅琊阳都|政治家、军事家|蜀汉丞相，以治国、北伐和《出师表》著称。
+司马懿||179|251|249|三国|河内温县|政治家、军事家|曹魏后期权臣，西晋建立的关键奠基者。
+王羲之|书圣|303|361|353|东晋十六国|琅琊临沂|书法家|东晋书法家，《兰亭序》代表中国行书高峰。
+陶渊明|陶潜|365|427|405|南北朝|浔阳柴桑|诗人|田园诗传统代表人物，影响后世文学审美。
+孝文帝|拓跋宏|467|499|494|南北朝|平城|君主、改革者|北魏皇帝，推行汉化改革和迁都洛阳。
+祖冲之||429|500|480|南北朝|范阳遒县|数学家、天文学家|精确计算圆周率并改进历法。
+隋文帝|杨坚|541|604|581|隋朝|弘农华阴|君主|隋朝建立者，重新统一中国并重建制度。
+隋炀帝|杨广|569|618|605|隋朝|长安|君主|开凿大运河并发动对外战争，隋亡与其政策密切相关。
+李世民|唐太宗|598|649|626|唐朝|武功或陇西成纪|君主|开创贞观之治，使唐朝进入强盛阶段。
+武则天|武曌|624|705|690|唐朝|并州文水|君主|中国历史上唯一正式称帝的女性君主。
+玄奘||602|664|645|唐朝|洛州缑氏|僧侣、翻译家|赴印度取经，翻译佛经并记录《大唐西域记》。
+鉴真||688|763|754|唐朝|扬州江阳|僧侣|东渡日本传播戒律、佛教艺术和唐代文化。
+杜甫|诗圣|712|770|755|唐朝|巩县|诗人|唐代现实主义诗歌代表，被尊为诗圣。
+李白|诗仙|701|762|744|唐朝|碎叶或绵州|诗人|盛唐浪漫主义诗歌代表人物。
+王维||701|761|740|唐朝|河东蒲州|诗人、画家|山水田园诗代表，兼具诗画成就。
+白居易||772|846|815|唐朝|新郑|诗人|中唐诗人，主张文章合为时而著。
+韩愈||768|824|805|唐朝|河阳|文学家、思想家|古文运动代表，推动儒学复兴。
+赵匡胤|宋太祖|927|976|960|北宋|洛阳夹马营|君主|北宋建立者，强化文官政治和中央集权。
+王安石||1021|1086|1070|北宋|临川|政治家、思想家|主持熙宁变法，试图改革财政、军事和教育制度。
+司马光||1019|1086|1084|北宋|陕州夏县|史学家、政治家|《资治通鉴》主编，北宋重要政治人物。
+苏轼|苏东坡|1037|1101|1080|北宋|眉州眉山|文学家、艺术家|诗词文书画皆有成就，宋代文化代表人物。
+沈括||1031|1095|1088|北宋|杭州钱塘|科学家、官员|《梦溪笔谈》作者，记录科技、地理、工程和自然观察。
+朱熹||1130|1200|1180|南宋|徽州婺源|思想家|理学集大成者，对东亚教育与儒学解释传统影响深远。
+岳飞||1103|1142|1135|南宋|相州汤阴|军事家|南宋抗金名将，后世民族忠义象征。
+陆游||1125|1210|1180|南宋|越州山阴|诗人|南宋爱国诗人，存诗数量极多。
+辛弃疾||1140|1207|1180|南宋|济南历城|词人、军事家|豪放词代表人物，兼具抗金经历。
+成吉思汗|铁木真,Genghis Khan|1162|1227|1206|蒙古帝国|蒙古草原斡难河流域|君主、军事统帅|统一蒙古诸部并开启蒙古帝国扩张。
+窝阔台||1186|1241|1229|蒙古帝国|蒙古草原|君主|蒙古帝国第二任大汗，继续大规模西征和制度建设。
+拔都||1207|1255|1242|金帐汗国|蒙古草原|军事统帅、汗王|成吉思汗之孙，建立金帐汗国。
+旭烈兀||1217|1265|1258|蒙古帝国|蒙古草原|军事统帅、汗王|率军西征并建立伊尔汗国。
+忽必烈|元世祖|1215|1294|1271|元朝|漠北草原|君主|建立元朝并完成对南宋的征服。
+马可·波罗|Marco Polo|1254|1324|1295|元朝|威尼斯|旅行家|其东方旅行叙述促进欧洲对亚洲的想象与了解。
+关汉卿||1220|1300|1270|元朝|大都或祁州|戏曲家|元杂剧代表人物，《窦娥冤》影响深远。
+郭守敬||1231|1316|1280|元朝|邢州|天文学家、水利专家|主持《授时历》编制并改进天文观测。
+朱元璋|明太祖|1328|1398|1368|明朝|濠州钟离|君主|明朝建立者，重建汉地王朝秩序。
+郑和||1371|1433|1405|明朝|云南昆阳|航海家、官员|率船队七下西洋，推动明代海上外交。
+王阳明|王守仁|1472|1529|1510|明朝|余姚|思想家、军事家|心学代表人物，主张知行合一。
+李时珍||1518|1593|1578|明朝|蕲州|医学家|《本草纲目》作者，系统整理药物知识。
+徐光启||1562|1633|1620|明朝|上海|科学家、官员|推动西学东渐，与利玛窦合作翻译《几何原本》。
+汤显祖||1550|1616|1598|明朝|临川|戏曲家|《牡丹亭》作者，明代戏曲文学代表。
+康熙帝|玄烨|1654|1722|1685|清朝|北京紫禁城|君主|清朝重要皇帝，推动多民族帝国稳定。
+乾隆帝|弘历|1711|1799|1750|清朝|北京雍和宫|君主|清朝鼎盛时期皇帝，完成大规模边疆整合。
+林则徐||1785|1850|1839|清朝|福建侯官|政治家|禁烟运动代表人物，近代中国危机的象征性人物。
+曾国藩||1811|1872|1860|清朝|湖南湘乡|政治家、军事家|组织湘军镇压太平天国，推动洋务与地方军事化。
+慈禧太后||1835|1908|1898|清朝|北京|政治人物|晚清实际掌权者，影响清末改革与政治走向。
+孙中山|孙文|1866|1925|1911|中华民国|广东香山|革命家、政治家|中华民国创立者，提出三民主义。
+蒋介石|Chiang Kai-shek|1887|1975|1928|中华民国|浙江奉化|政治家、军事家|国民政府主要领导人，影响20世纪中国政治。
+鲁迅|周树人|1881|1936|1920|中华民国|浙江绍兴|作家、思想家|现代中国文学奠基者之一。
+胡适||1891|1962|1919|中华民国|安徽绩溪|思想家、学者|新文化运动代表人物，倡导白话文和实验主义。
+毛泽东||1893|1976|1949|中华人民共和国|湖南湘潭|政治家|中华人民共和国主要缔造者，深刻影响20世纪中国。
+邓小平||1904|1997|1978|中华人民共和国|四川广安|政治家|改革开放主要领导人，推动中国经济与制度转型。
+钱学森||1911|2009|1956|中华人民共和国|上海|科学家|中国航天和导弹事业重要奠基者。
+袁隆平||1930|2021|1973|中华人民共和国|北京|农业科学家|杂交水稻研究代表人物，对粮食生产影响重大。
+卑弥呼||170|248|238|弥生时代|邪马台国|政治人物|日本古代女王，《魏志倭人传》中记载的倭国统治者。
+圣德太子||574|622|604|飞鸟时代|日本飞鸟地区|政治家|推动佛教和律令制度，象征日本早期国家形成。
+天武天皇||631|686|673|飞鸟时代|日本|君主|强化天皇制和律令国家建设。
+鉴真东渡时期日本僧侣最澄|最澄|767|822|805|平安时代|近江国|僧侣|日本天台宗创立者，推动平安佛教发展。
+空海||774|835|806|平安时代|赞岐国|僧侣、书法家|日本真言宗创立者，兼具文学与书法影响。
+紫式部||973|1014|1008|平安时代|京都|作家|《源氏物语》作者，日本古典文学代表。
+清少纳言||966|1025|1000|平安时代|京都|作家|《枕草子》作者，平安随笔文学代表。
+源赖朝||1147|1199|1185|镰仓幕府|尾张或京都|武家领袖|建立镰仓幕府，日本武家政治开端。
+北条政子||1157|1225|1200|镰仓幕府|伊豆|政治人物|镰仓幕府重要女性政治人物，被称为尼将军。
+足利尊氏||1305|1358|1336|室町幕府|日本|武家领袖|建立室町幕府。
+足利义满||1358|1408|1397|室町幕府|京都|将军、政治家|室町幕府强盛时期将军，推动北山文化。
+织田信长||1534|1582|1570|战国安土桃山|尾张国|军事统帅、政治家|日本战国统一进程关键人物。
+丰臣秀吉||1537|1598|1590|战国安土桃山|尾张国|政治家、军事统帅|完成日本战国统一。
+德川家康||1543|1616|1603|江户幕府|三河国冈崎|将军|建立江户幕府，开启德川统治。
+松尾芭蕉||1644|1694|1689|江户幕府|伊贺国|诗人|俳谐大师，日本古典诗歌代表。
+葛饰北斋||1760|1849|1831|江户幕府|江户|艺术家|浮世绘大师，《富岳三十六景》影响世界艺术。
+明治天皇||1852|1912|1868|明治日本|京都|君主|明治维新的象征性君主，见证日本近代国家转型。
+福泽谕吉||1835|1901|1872|明治日本|大阪|思想家、教育家|日本启蒙思想代表，庆应义塾创办者。
+伊藤博文||1841|1909|1889|明治日本|长州|政治家|日本首任首相，参与制定明治宪法。
+夏目漱石||1867|1916|1905|近现代日本|江户|作家|日本近代文学代表人物。
+昭和天皇||1901|1989|1945|近现代日本|东京|君主|经历日本战争、战败与战后重建的天皇。
+檀君||-2333|-2200|-2300|三国时代|朝鲜半岛|传说君主|朝鲜古代建国传说中的人物。
+广开土大王||374|413|400|三国时代|高句丽|君主|高句丽扩张时期重要国王。
+金庾信||595|673|660|三国时代|新罗|军事统帅|新罗统一战争关键将领。
+王建|高丽太祖|877|943|918|高丽王朝|松岳|君主|建立高丽王朝，统一后三国。
+徐熙||942|998|993|高丽王朝|高丽|外交家、政治家|以外交谈判维护高丽北方利益。
+李成桂|朝鲜太祖|1335|1408|1392|朝鲜王朝|咸兴|君主|建立朝鲜王朝。
+世宗大王|李祹|1397|1450|1443|朝鲜王朝|汉城|君主|创制训民正音，推动科学与制度发展。
+李舜臣||1545|1598|1592|朝鲜王朝|汉城|军事统帅|壬辰战争中抵抗日本入侵的海军名将。
+申师任堂||1504|1551|1530|朝鲜王朝|江陵|艺术家、诗人|朝鲜时期女性艺术家和文人。
+金九||1876|1949|1945|大韩帝国/殖民期|黄海道|独立运动家|朝鲜半岛独立运动重要人物。
+李承晚||1875|1965|1948|现代朝韩|黄海道|政治家|韩国首任总统。
+金日成||1912|1994|1948|现代朝韩|平壤附近|政治家|朝鲜民主主义人民共和国创建者。
+胡志明||1890|1969|1945|大越|乂安省|革命家、政治家|越南独立运动和现代越南国家形成的核心人物。
+李常杰||1019|1105|1075|大越|升龙|军事家|大越李朝名将，抵抗宋朝进攻。
+陈兴道||1228|1300|1288|大越|越南|军事统帅|越南陈朝抗击蒙古入侵的代表人物。
+阮惠|光中帝|1753|1792|1788|大越|西山地区|君主、军事家|西山朝重要领袖，击败清军干预。
+阇耶跋摩二世||770|835|802|高棉帝国|柬埔寨|君主|高棉帝国奠基者。
+苏利耶跋摩二世||1113|1150|1120|高棉帝国|吴哥|君主|吴哥窟建设者，高棉帝国重要国王。
+阇耶跋摩七世||1122|1218|1181|高棉帝国|吴哥|君主|高棉帝国最强盛时期君主之一。
+哈亚姆·乌鲁克||1334|1389|1350|满者伯夷|爪哇|君主|满者伯夷帝国黄金时代国王。
+加查·马达||1290|1364|1350|满者伯夷|爪哇|政治家、军事家|满者伯夷重要宰相，推动海上帝国扩张。
+阿育王|Ashoka|-304|-232|-260|孔雀王朝|孔雀王朝王室核心地区|君主|孔雀王朝重要君主，支持佛教传播。
+旃陀罗笈多·孔雀||-340|-297|-322|孔雀王朝|摩揭陀地区|君主|孔雀王朝建立者，统一北印度大部。
+考底利耶|Chanakya|-375|-283|-320|孔雀王朝|印度北部|政治思想家|《政事论》传统代表，辅佐孔雀王朝建立。
+迦腻色伽||78|144|127|贵霜帝国|贵霜王室地区|君主|贵霜帝国重要国王，支持佛教和丝路交流。
+迦梨陀娑||375|450|410|笈多王朝|印度|诗人、剧作家|梵语文学巨匠，代表古典印度文学高峰。
+旃陀罗笈多二世||375|415|400|笈多王朝|印度|君主|笈多王朝强盛时期君主。
+戒日王||590|647|606|戒日王朝|北印度|君主|短暂统一北印度并支持佛教文化。
+阿克巴|Akbar|1542|1605|1556|莫卧儿帝国|信德乌默尔科特|君主|莫卧儿帝国重要皇帝，推动行政整合与宗教宽容。
+沙贾汗||1592|1666|1632|莫卧儿帝国|拉合尔|君主、建筑赞助者|泰姬陵建造者，莫卧儿艺术代表时期君主。
+奥朗则布||1618|1707|1658|莫卧儿帝国|古吉拉特|君主|莫卧儿帝国末期扩张的重要皇帝。
+甘地|Mahatma Gandhi|1869|1948|1930|英属印度|古吉拉特波尔班达尔|政治家、思想家|印度民族运动领袖，倡导非暴力抵抗。
+尼赫鲁||1889|1964|1947|英属印度|阿拉哈巴德|政治家|印度独立运动领袖和首任总理。
+泰戈尔||1861|1941|1913|英属印度|加尔各答|诗人、思想家|亚洲首位诺贝尔文学奖得主。
+汉谟拉比|Hammurabi|-1810|-1750|-1754|古巴比伦|巴比伦或其统治核心地区|君主|古巴比伦国王，以法典和两河统一闻名。
+萨尔贡大帝||-2334|-2279|-2334|阿卡德帝国|阿卡德地区|君主、军事统帅|阿卡德帝国建立者，早期帝国统治代表。
+尼布甲尼撒二世||-634|-562|-605|新巴比伦|巴比伦|君主|新巴比伦王国强盛时期国王，巴比伦城建设者。
+亚述巴尼拔||-685|-631|-668|亚述帝国|亚述|君主|新亚述帝国晚期国王，以尼尼微图书馆著称。
+居鲁士大帝|Cyrus|-600|-530|-550|阿契美尼德波斯|波斯或安善地区|君主|阿契美尼德波斯帝国创建者。
+大流士一世|Darius|-550|-486|-522|阿契美尼德波斯|波斯|君主|改革行省、道路和税制，巩固波斯帝国。
+薛西斯一世|Xerxes|-519|-465|-480|阿契美尼德波斯|波斯|君主|发动第二次希波战争的波斯国王。
+查拉图斯特拉|Zoroaster|-1000|-900|-950|阿契美尼德波斯|伊朗高原|宗教思想家|琐罗亚斯德教传统核心先知。
+阿尔达希尔一世||180|242|224|萨珊波斯|波斯|君主|萨珊波斯建立者。
+沙普尔一世||215|270|260|萨珊波斯|波斯|君主|萨珊帝国扩张时期君主，曾俘虏罗马皇帝瓦勒良。
+霍斯劳一世||501|579|540|萨珊波斯|波斯|君主|萨珊帝国中兴君主，推进行政和文化建设。
+穆罕默德|Muhammad|570|632|622|阿拉伯帝国|麦加|宗教领袖、政治家|伊斯兰教先知，建立早期穆斯林共同体。
+阿布·伯克尔||573|634|632|阿拉伯帝国|麦加|哈里发|首任正统哈里发，巩固早期伊斯兰共同体。
+欧麦尔||584|644|634|阿拉伯帝国|麦加|哈里发|第二任哈里发，推动阿拉伯帝国大规模扩张。
+阿里||600|661|656|阿拉伯帝国|麦加|哈里发、宗教人物|第四任哈里发，伊斯兰史重要人物。
+哈伦·拉希德||763|809|786|阿拉伯帝国|雷伊|哈里发|阿拔斯王朝黄金时代象征性哈里发。
+伊本·西那|Avicenna|980|1037|1020|阿拉伯帝国|布哈拉附近|哲学家、医学家|《医典》作者，影响伊斯兰和欧洲医学。
+花拉子米||780|850|825|阿拉伯帝国|花剌子模|数学家|代数学和印度数字传播的重要人物。
+鲁米||1207|1273|1250|塞尔柱帝国|巴尔赫|诗人、苏菲思想家|波斯语苏菲诗歌代表人物。
+萨拉丁|Saladin|1137|1193|1187|阿拉伯帝国|提克里特|君主、军事统帅|阿尤布王朝建立者，十字军时代重要人物。
+奥斯曼一世||1258|1326|1299|奥斯曼帝国|安纳托利亚|君主|奥斯曼王朝创立者。
+穆罕默德二世||1432|1481|1453|奥斯曼帝国|埃迪尔内|君主|攻占君士坦丁堡，被称为征服者。
+苏莱曼大帝|Suleiman|1494|1566|1520|奥斯曼帝国|特拉布宗|君主|奥斯曼帝国黄金时代苏丹。
+米马尔·希南||1489|1588|1550|奥斯曼帝国|安纳托利亚|建筑师|奥斯曼古典建筑大师。
+阿塔图尔克||1881|1938|1923|奥斯曼帝国|萨洛尼卡|政治家、改革者|土耳其共和国创建者，推动世俗化和现代化改革。
+荷马|Homer|-800|-700|-750|古希腊城邦|爱奥尼亚或希腊世界|诗人|《伊利亚特》《奥德赛》传统作者。
+梭伦||-638|-558|-594|古希腊城邦|雅典|政治家、改革者|雅典早期改革家，奠定城邦制度基础。
+毕达哥拉斯||-570|-495|-530|古希腊城邦|萨摩斯|哲学家、数学家|毕达哥拉斯学派创始人。
+苏格拉底|Socrates|-470|-399|-420|古希腊城邦|雅典|哲学家|西方哲学重要奠基者。
+柏拉图|Plato|-427|-347|-380|古希腊城邦|雅典|哲学家|创建学园，影响西方形而上学与政治哲学。
+亚里士多德|Aristotle|-384|-322|-350|古希腊城邦|斯塔吉拉|哲学家|百科全书式哲学家，影响逻辑、科学和伦理学。
+伯里克利||-495|-429|-450|古希腊城邦|雅典|政治家|雅典民主和古典文化鼎盛时期领袖。
+希罗多德||-484|-425|-450|古希腊城邦|哈利卡纳苏斯|史学家|《历史》作者，被称为历史之父。
+修昔底德||-460|-400|-430|古希腊城邦|雅典|史学家|《伯罗奔尼撒战争史》作者。
+菲迪亚斯||-480|-430|-450|古希腊城邦|雅典|雕塑家|帕台农神庙雕塑的代表艺术家。
+亚历山大大帝|Alexander|-356|-323|-334|马其顿帝国|马其顿佩拉|君主、军事统帅|马其顿国王，推动希腊化世界形成。
+欧几里得||-325|-265|-300|希腊化诸国|亚历山大里亚|数学家|《几何原本》作者。
+阿基米德||-287|-212|-250|希腊化诸国|叙拉古|数学家、工程师|古代科学与工程代表人物。
+埃拉托色尼||-276|-194|-240|希腊化诸国|昔兰尼|学者、地理学家|较准确测量地球周长。
+克利奥帕特拉||-69|-30|-40|希腊化诸国|亚历山大里亚|君主|托勒密埃及末代女王。
+凯撒|Julius Caesar,Caesar|-100|-44|-49|罗马共和国|罗马|政治家、军事统帅|罗马共和国末期关键人物。
+西塞罗||-106|-43|-60|罗马共和国|阿尔皮努姆|政治家、演说家|罗马共和传统和拉丁散文代表人物。
+庞培||-106|-48|-60|罗马共和国|罗马|军事统帅|罗马共和国末期重要将领。
+奥古斯都|屋大维,Augustus|-63|14|-27|罗马帝国|罗马附近的韦莱特里|君主|罗马帝国第一位元首。
+维吉尔||-70|-19|-29|罗马帝国|曼图亚附近|诗人|《埃涅阿斯纪》作者。
+奥维德||-43|17|1|罗马帝国|苏尔莫|诗人|罗马黄金时代诗人。
+塞内加||-4|65|50|罗马帝国|科尔多瓦|哲学家、政治家|斯多亚派思想家。
+图拉真||53|117|100|罗马帝国|伊塔利卡|君主|罗马帝国疆域最大时期皇帝。
+哈德良||76|138|125|罗马帝国|伊塔利卡|君主|整顿帝国边防，修建哈德良长城。
+马可·奥勒留||121|180|170|罗马帝国|罗马|君主、哲学家|斯多亚派皇帝，《沉思录》作者。
+君士坦丁大帝||272|337|313|罗马帝国|尼什|君主|承认基督教合法地位并建立君士坦丁堡。
+查士丁尼一世||482|565|530|拜占庭帝国|陶雷西姆|君主|编纂《民法大全》，推动拜占庭复兴。
+狄奥多拉||500|548|532|拜占庭帝国|君士坦丁堡|皇后、政治人物|拜占庭皇后，影响查士丁尼时代政治。
+希拉克略||575|641|610|拜占庭帝国|卡帕多西亚|君主|拜占庭重要皇帝，重组帝国并对抗萨珊和阿拉伯扩张。
+查理曼|Charlemagne|742|814|800|加洛林帝国|法兰克王国核心地区|君主|加洛林帝国皇帝，中世纪西欧秩序奠基者。
+阿尔昆||735|804|790|加洛林帝国|约克|学者、教育家|加洛林文艺复兴重要人物。
+奥托一世||912|973|962|神圣罗马帝国|萨克森|君主|神圣罗马帝国早期皇帝。
+腓特烈一世||1122|1190|1155|神圣罗马帝国|德意志|君主|巴巴罗萨，神圣罗马帝国重要皇帝。
+腓特烈二世||1194|1250|1220|神圣罗马帝国|西西里|君主|兼具地中海和德意志政治影响的皇帝。
+马丁·路德||1483|1546|1517|神圣罗马帝国|艾斯莱本|宗教改革家|宗教改革核心人物。
+丢勒||1471|1528|1500|神圣罗马帝国|纽伦堡|艺术家|德国文艺复兴代表画家。
+歌德||1749|1832|1808|神圣罗马帝国|法兰克福|文学家|德国文学巨匠，《浮士德》作者。
+贝多芬||1770|1827|1804|神圣罗马帝国|波恩|作曲家|古典主义到浪漫主义音乐转型关键人物。
+俾斯麦||1815|1898|1871|神圣罗马帝国|普鲁士舍恩豪森|政治家|推动德意志统一。
+路易十四||1638|1715|1661|法国王权国家|圣日耳曼昂莱|君主|法国绝对王权象征，凡尔赛宫时代君主。
+圣女贞德||1412|1431|1429|法国王权国家|栋雷米|军事人物、宗教象征|百年战争中的法国民族象征。
+黎塞留||1585|1642|1630|法国王权国家|巴黎|政治家|强化法国王权和国家行政。
+伏尔泰||1694|1778|1750|法国王权国家|巴黎|思想家、作家|启蒙运动代表人物。
+卢梭||1712|1778|1762|法国王权国家|日内瓦|思想家|社会契约论和现代政治思想重要人物。
+莫里哀||1622|1673|1660|法国王权国家|巴黎|剧作家|法国古典喜剧大师。
+笛卡尔||1596|1650|1637|法国王权国家|图赖讷|哲学家、数学家|近代哲学和解析几何重要奠基者。
+拿破仑|Napoleon|1769|1821|1804|法国王权国家|科西嘉阿雅克肖|军事统帅、皇帝|重塑欧洲政治格局并推动现代法典。
+雨果||1802|1885|1862|法国王权国家|贝桑松|作家|法国浪漫主义文学代表。
+莫奈||1840|1926|1874|法国王权国家|巴黎|艺术家|印象派绘画代表人物。
+威廉一世||1028|1087|1066|英格兰王国|诺曼底|君主|诺曼征服英格兰的关键人物。
+亨利二世||1133|1189|1154|英格兰王国|勒芒|君主|推动英格兰普通法和王权建设。
+理查一世||1157|1199|1190|英格兰王国|牛津|君主、军事统帅|十字军时代英格兰国王。
+约翰王||1166|1216|1215|英格兰王国|牛津|君主|《大宪章》签署时期国王。
+乔叟||1343|1400|1387|英格兰王国|伦敦|诗人|《坎特伯雷故事集》作者。
+伊丽莎白一世||1533|1603|1588|英格兰王国|格林尼治|君主|都铎王朝女王，英格兰海权和文艺复兴时期代表。
+莎士比亚||1564|1616|1600|英格兰王国|斯特拉特福|剧作家、诗人|英语文学最重要作家之一。
+克伦威尔||1599|1658|1653|英格兰王国|亨廷登|政治家、军事统帅|英国内战和共和国时期核心人物。
+牛顿||1642|1727|1687|英国/大不列颠|林肯郡伍尔索普|科学家|经典力学和微积分奠基者之一。
+亚当·斯密||1723|1790|1776|英国/大不列颠|苏格兰柯科迪|经济学家、思想家|《国富论》作者，现代经济学重要奠基者。
+达尔文||1809|1882|1859|英国/大不列颠|什鲁斯伯里|科学家|进化论奠基者。
+维多利亚女王|Victoria|1819|1901|1876|大英帝国本土|伦敦肯辛顿宫|君主|英国帝国时代象征性君主。
+丘吉尔||1874|1965|1940|大英帝国本土|布莱尼姆宫|政治家|二战时期英国首相。
+基辅的奥列格||845|912|882|基辅罗斯|罗斯地区|君主|基辅罗斯早期统治者。
+弗拉基米尔一世||958|1015|988|基辅罗斯|基辅|君主|推动罗斯受洗，影响东斯拉夫宗教文化。
+亚历山大·涅夫斯基||1221|1263|1242|基辅罗斯|佩列斯拉夫尔|军事统帅、王公|抵抗西方骑士团并处理与蒙古关系。
+伊凡三世||1440|1505|1480|莫斯科公国|莫斯科|君主|莫斯科崛起和摆脱金帐汗国控制的重要人物。
+伊凡雷帝||1530|1584|1547|俄罗斯沙皇国|莫斯科|君主|俄罗斯首位沙皇，强化中央集权。
+彼得大帝|Peter the Great|1672|1725|1721|俄罗斯帝国|莫斯科|君主、改革者|推动俄罗斯西化和帝国化。
+叶卡捷琳娜二世||1729|1796|1762|俄罗斯帝国|什切青|君主|俄罗斯帝国扩张和启蒙专制代表。
+托尔斯泰||1828|1910|1869|俄罗斯帝国|亚斯纳亚波利亚纳|作家|《战争与和平》《安娜·卡列尼娜》作者。
+陀思妥耶夫斯基||1821|1881|1866|俄罗斯帝国|莫斯科|作家|俄罗斯文学和心理小说巨匠。
+柴可夫斯基||1840|1893|1877|俄罗斯帝国|沃特金斯克|作曲家|俄罗斯浪漫主义音乐代表人物。
+列宁||1870|1924|1917|俄罗斯帝国|辛比尔斯克|革命家、政治家|俄国革命和苏联创建核心人物。
+图坦卡蒙||-1341|-1323|-1332|古埃及|埃及王室|君主|因陵墓发现而闻名的新王国法老。
+哈特谢普苏特||-1507|-1458|-1479|古埃及|埃及王室|女法老|古埃及少数女性法老之一，推动贸易和建筑。
+拉美西斯二世|Ramesses II|-1303|-1213|-1279|古埃及|埃及王室核心地区|君主|新王国著名法老，建筑和战争活动突出。
+阿肯那顿||-1353|-1336|-1345|古埃及|埃及王室|君主、宗教改革者|推行阿顿崇拜改革。
+纳尔迈||-3150|-3100|-3100|古埃及|上埃及|君主|传统上与上下埃及统一相关。
+皮耶||-747|-716|-730|库施王国|努比亚|君主|库施国王，曾统治埃及建立第二十五王朝。
+塔哈尔卡||-690|-664|-680|库施王国|努比亚|君主|库施和埃及第二十五王朝重要法老。
+汉尼拔|Hannibal|-247|-183|-216|迦太基|迦太基|军事统帅|第二次布匿战争中率军翻越阿尔卑斯进攻罗马。
+曼萨·穆萨|Mansa Musa|1280|1337|1324|马里帝国|马里帝国王室地区|君主|马里帝国著名君主，以黄金和朝觐闻名。
+松迪亚塔||1217|1255|1235|马里帝国|曼丁地区|君主|马里帝国建立者。
+阿斯基亚·穆罕默德||1443|1538|1493|桑海帝国|西非|君主|桑海帝国重要统治者。
+埃扎纳||320|360|340|阿克苏姆|阿克苏姆|君主|阿克苏姆王国重要国王，推动基督教化。
+海尔·塞拉西||1892|1975|1930|埃塞俄比亚帝国|埃塞俄比亚|君主|埃塞俄比亚末代皇帝，反殖民象征人物。
+奥尔梅克巨石头像工匠代表||-1200|-900|-1000|奥尔梅克文明|墨西哥湾沿岸|艺术家群体|代表奥尔梅克文明的纪念性雕刻传统。
+帕卡尔大王||603|683|615|玛雅文明|帕伦克|君主|玛雅帕伦克城邦著名国王。
+亚什·库克·莫||426|437|426|玛雅文明|科潘|君主|科潘王朝创建者。
+特奥蒂瓦坎祭司王代表||100|250|200|特奥蒂瓦坎|特奥蒂瓦坎|宗教政治人物|代表特奥蒂瓦坎城市宗教和政治权力。
+托皮尔津||900|947|930|托尔特克|图拉|传说君主|托尔特克传统中的重要统治者形象。
+蒙特祖玛一世||1398|1469|1440|阿兹特克帝国|特诺奇蒂特兰|君主|阿兹特克帝国扩张时期统治者。
+蒙特祖玛二世|Moctezuma II|1466|1520|1502|阿兹特克帝国|特诺奇蒂特兰|君主|西班牙征服前夕阿兹特克统治者。
+埃尔南·科尔特斯||1485|1547|1521|新西班牙|麦德林|征服者|率西班牙力量征服阿兹特克帝国。
+贝尼托·华雷斯||1806|1872|1861|墨西哥|瓦哈卡|政治家|墨西哥自由派总统，推动改革战争和国家建设。
+弗里达·卡罗||1907|1954|1939|墨西哥|科约阿坎|艺术家|墨西哥现代艺术代表人物。
+迭戈·里维拉||1886|1957|1930|墨西哥|瓜纳华托|艺术家|墨西哥壁画运动代表。
+查文祭司代表||-900|-500|-700|查文文化|安第斯山区|宗教人物|代表查文文化宗教中心的祭司传统。
+莫切统治者代表||100|300|200|莫切/纳斯卡|秘鲁北海岸|君主或祭司|代表莫切社会的区域精英。
+纳斯卡艺术家代表||100|600|400|莫切/纳斯卡|秘鲁南海岸|艺术家群体|代表纳斯卡地画和陶器传统。
+瓦里统治者代表||600|900|750|瓦里/蒂亚瓦纳科|安第斯中部|政治人物|代表安第斯中期国家整合。
+帕查库特克|Pachacuti|1418|1471|1438|印加帝国|库斯科地区|君主|印加帝国扩张的关键君主。
+图帕克·印卡·尤潘基||1441|1493|1471|印加帝国|库斯科|君主|印加帝国扩张时期君主。
+阿塔瓦尔帕||1502|1533|1532|印加帝国|基多或库斯科体系|君主|西班牙征服时期印加统治者。
+弗朗西斯科·皮萨罗||1478|1541|1533|秘鲁殖民地|特鲁希略|征服者|征服印加帝国并建立西班牙殖民统治。
+圣马丁||1778|1850|1821|秘鲁|亚佩尤|军事家、独立运动领袖|南美独立运动重要人物。
+西蒙·玻利瓦尔||1783|1830|1824|秘鲁|加拉加斯|独立运动领袖|南美独立运动核心人物。
+乔治·华盛顿|Washington|1732|1799|1776|美国|弗吉尼亚殖民地|政治家、军事统帅|美国独立战争领袖和首任总统。
+本杰明·富兰克林||1706|1790|1776|美国|波士顿|政治家、科学家|美国建国者之一，兼具科学与外交成就。
+托马斯·杰斐逊||1743|1826|1776|美国|弗吉尼亚|政治家、思想家|《独立宣言》主要起草者。
+亚历山大·汉密尔顿||1755|1804|1789|美国|尼维斯岛|政治家、经济制度设计者|美国财政制度重要奠基者。
+林肯|Abraham Lincoln|1809|1865|1863|美国|肯塔基州|政治家|维护联邦统一并推动废奴。
+爱迪生||1847|1931|1880|美国|俄亥俄州米兰|发明家|电灯、留声机等技术商业化代表人物。
+马克·吐温||1835|1910|1885|美国|密苏里州|作家|美国现实主义文学代表。
+罗斯福|Franklin Roosevelt|1882|1945|1933|美国|纽约州海德公园|政治家|新政和二战时期美国总统。
+马丁·路德·金||1929|1968|1963|美国|亚特兰大|民权领袖|美国民权运动代表人物。
+爱因斯坦||1879|1955|1905|美国|乌尔姆|科学家|相对论创立者，晚年在美国工作。
+玛丽·居里|Marie Curie|1867|1934|1903|法国王权国家|华沙|科学家|放射性研究开创者，两次获得诺贝尔奖。
+毕加索|Pablo Picasso|1881|1973|1907|法国王权国家|马拉加|艺术家|现代主义艺术巨匠，长期在法国活动。
+罗丹|Auguste Rodin|1840|1917|1880|法国王权国家|巴黎|艺术家|近代雕塑代表人物。
+巴尔扎克||1799|1850|1835|法国王权国家|图尔|作家|《人间喜剧》作者，现实主义文学巨匠。
+普鲁斯特||1871|1922|1913|法国王权国家|巴黎|作家|《追忆似水年华》作者，现代文学重要人物。
+康德|Immanuel Kant|1724|1804|1781|神圣罗马帝国|柯尼斯堡|哲学家|德国古典哲学奠基者之一。
+黑格尔||1770|1831|1807|神圣罗马帝国|斯图加特|哲学家|德国古典哲学代表，辩证法体系影响深远。
+马克思||1818|1883|1848|神圣罗马帝国|特里尔|思想家|现代社会主义和社会理论重要奠基者。
+瓦格纳||1813|1883|1876|神圣罗马帝国|莱比锡|作曲家|德国浪漫主义歌剧代表人物。
+巴赫||1685|1750|1720|神圣罗马帝国|艾森纳赫|作曲家|巴洛克音乐集大成者。
+亨德尔||1685|1759|1741|英国/大不列颠|哈雷|作曲家|巴洛克作曲家，长期在英国活动。
+简·奥斯汀||1775|1817|1813|英国/大不列颠|汉普郡|作家|英国小说传统重要作家。
+狄更斯||1812|1870|1850|英国/大不列颠|朴次茅斯|作家|维多利亚时代现实主义文学代表。
+拜伦||1788|1824|1815|英国/大不列颠|伦敦|诗人|英国浪漫主义诗人。
+弗洛伦斯·南丁格尔||1820|1910|1854|大英帝国本土|佛罗伦萨|护理改革家|现代护理事业奠基者。
+麦哲伦||1480|1521|1519|西属/葡属美洲|葡萄牙北部|航海家|其船队完成首次环球航行。
+哥伦布||1451|1506|1492|西属/葡属美洲|热那亚|航海家|欧洲跨大西洋殖民扩张的关键人物。
+达·芬奇|Leonardo da Vinci|1452|1519|1503|神圣罗马帝国|芬奇镇|艺术家、科学家|文艺复兴巨匠，绘画、工程与解剖研究皆有成就。
+米开朗基罗||1475|1564|1508|神圣罗马帝国|卡普雷塞|艺术家|文艺复兴雕塑、绘画和建筑大师。
+拉斐尔||1483|1520|1510|神圣罗马帝国|乌尔比诺|艺术家|文艺复兴盛期绘画代表人物。
+伽利略||1564|1642|1632|神圣罗马帝国|比萨|科学家|近代科学革命代表人物。
+马基雅维利||1469|1527|1513|神圣罗马帝国|佛罗伦萨|政治思想家|《君主论》作者，近代政治思想重要人物。
+但丁||1265|1321|1300|神圣罗马帝国|佛罗伦萨|诗人|《神曲》作者，意大利文学奠基者。
+彼特拉克||1304|1374|1340|神圣罗马帝国|阿雷佐|诗人、学者|人文主义传统先驱。
+薄伽丘||1313|1375|1350|神圣罗马帝国|佛罗伦萨|作家|《十日谈》作者。
+拉瓦锡||1743|1794|1789|法国王权国家|巴黎|科学家|近代化学奠基者之一。
+门捷列夫||1834|1907|1869|俄罗斯帝国|托博尔斯克|科学家|元素周期表提出者。
+巴甫洛夫||1849|1936|1904|俄罗斯帝国|梁赞|科学家|条件反射研究代表人物。
+普希金||1799|1837|1830|俄罗斯帝国|莫斯科|诗人|俄罗斯现代文学奠基者。
+果戈理||1809|1852|1842|俄罗斯帝国|乌克兰波尔塔瓦|作家|俄罗斯现实主义文学代表。
+契诃夫||1860|1904|1890|俄罗斯帝国|塔甘罗格|作家|短篇小说和戏剧大师。
+甘地夫人|英迪拉·甘地|1917|1984|1966|英属印度|阿拉哈巴德|政治家|印度总理，影响冷战时期南亚政治。
+阿姆倍伽尔||1891|1956|1950|英属印度|中央邦|法学家、政治家|印度宪法主要起草者，反种姓歧视领袖。
+拉马克里希纳||1836|1886|1875|英属印度|孟加拉|宗教思想家|近代印度宗教复兴代表人物。
+辨喜|Vivekananda|1863|1902|1893|英属印度|加尔各答|思想家、宗教改革者|向世界传播印度哲学和瑜伽传统。
+葛饰应为||1800|1866|1840|江户幕府|江户|艺术家|江户时代女性浮世绘画家。
+宫本武藏||1584|1645|1620|江户幕府|播磨或美作|武士、思想家|剑术家，《五轮书》作者。
+西乡隆盛||1828|1877|1868|明治日本|萨摩|政治家、武士|明治维新重要人物。
+大久保利通||1830|1878|1871|明治日本|萨摩|政治家|明治维新核心政治家。
+坂本龙马||1836|1867|1866|明治日本|土佐|政治活动家|幕末倒幕和维新运动重要人物。
+金弘道||1745|1806|1780|朝鲜王朝|朝鲜|艺术家|朝鲜后期风俗画代表画家。
+丁若镛||1762|1836|1800|朝鲜王朝|京畿道|思想家、实学家|朝鲜实学代表人物。
+许浚||1539|1615|1610|朝鲜王朝|朝鲜|医学家|《东医宝鉴》编纂者。
+安重根||1879|1910|1909|大韩帝国/殖民期|黄海道|独立运动家|朝鲜反殖民运动重要人物。
+尹东柱||1917|1945|1941|大韩帝国/殖民期|北间岛|诗人|殖民时期朝鲜语诗歌代表人物。
+切·格瓦拉||1928|1967|1959|美国|阿根廷罗萨里奥|革命家|拉丁美洲革命象征人物。
+海明威||1899|1961|1952|美国|伊利诺伊州|作家|美国现代文学代表，诺贝尔文学奖得主。
+欧内斯特·劳伦斯||1901|1958|1939|美国|南达科他州|科学家|回旋加速器发明者。
+奥本海默||1904|1967|1945|美国|纽约|科学家|曼哈顿计划科学负责人。
+乔布斯||1955|2011|2007|美国|旧金山|企业家|个人计算机和智能手机时代重要创新者。
+`;
+const figures=figureRows.trim().split('\n').filter(Boolean).map(line=>{const [name,aliases,start,end,active,segmentLabel,birthplace,role,note]=line.split('|');return {name,aliases:aliases?aliases.split(',').filter(Boolean):[],start:Number(start),end:Number(end),active:Number(active),segmentLabel,birthplace,role,intro:`${name}是${segmentLabel}相关的重要${role}。${note}其生平与活动反映了该时代的政治秩序、思想文化或艺术成就，也是理解这一文明阶段的重要人物线索。`}});
+const eventRows=`
+-3100|egypt|5|上下埃及统一，早王朝国家形成，尼罗河文明进入王权时代。
+-2600|egypt|4|古王国时期金字塔建设达到高峰，法老王权和宗教体系成熟。
+-2334|iraq|5|萨尔贡建立阿卡德帝国，两河流域出现早期跨城邦帝国。
+-2070|china|5|夏朝传统开启，中国早期王朝叙事由此展开。
+-1894|iraq|4|古巴比伦王国兴起，巴比伦成为两河流域重要政治中心。
+-1754|iraq|5|汉谟拉比法典形成，集中体现古巴比伦王权和法律秩序。
+-1600|china|4|商朝兴起，青铜礼器、甲骨文字和王权祭祀体系逐渐成熟。
+-1500|india|4|吠陀文化在南亚发展，祭祀传统和早期社会结构形成。
+-1450|greece|4|米诺斯文明衰落，爱琴海权力重心逐渐转向迈锡尼世界。
+-1274|egypt|4|卡迭石战役爆发，埃及与赫梯争夺叙利亚地区霸权。
+-1046|china|5|周武王伐纣，西周建立，分封制和礼乐秩序展开。
+-776|greece|4|传统上第一届古代奥林匹克运动会举行，希腊城邦文化形成共同记忆。
+-770|china|4|周平王东迁，东周开始，诸侯政治和春秋格局形成。
+-753|italy|4|传统纪年中罗马建城，意大利半岛出现后来罗马国家的起点。
+-612|iraq|5|尼尼微陷落，亚述帝国崩溃，两河政治格局重组。
+-586|iraq|4|新巴比伦攻陷耶路撒冷，西亚宗教与政治历史发生重大转折。
+-550|iran|5|居鲁士建立阿契美尼德波斯帝国，西亚进入大帝国时代。
+-509|italy|4|罗马王政结束，共和国传统开始形成。
+-500|greece|4|希腊城邦文化进入古典阶段，哲学、戏剧和政治实验发展。
+-476|china|4|春秋时代结束，战国兼并和制度改革加速。
+-480|greece|5|希波战争进入关键阶段，希腊城邦抵抗波斯入侵。
+-431|greece|5|伯罗奔尼撒战争爆发，雅典与斯巴达争夺希腊世界主导权。
+-356|china|5|商鞅变法推动秦国制度改革，秦的统一能力迅速增强。
+-336|greece|5|亚历山大继位，马其顿即将展开对波斯的东征。
+-323|greece|5|亚历山大去世，庞大帝国分裂，希腊化时代开启。
+-322|india|5|孔雀王朝兴起，南亚进入早期大一统帝国阶段。
+-264|italy|5|第一次布匿战争爆发，罗马与迦太基争夺西地中海。
+-260|india|5|阿育王征服羯陵伽后转向推崇佛法，佛教传播得到王权支持。
+-221|china|5|秦灭六国，建立中国第一个大一统中央集权王朝。
+-218|italy|5|第二次布匿战争爆发，汉尼拔率军越过阿尔卑斯进攻罗马。
+-202|china|5|刘邦建立汉朝，汉帝国成为东亚长期政治秩序的核心。
+-146|italy|5|罗马摧毁迦太基并控制希腊，地中海霸权基本确立。
+-27|italy|5|奥古斯都建立元首制，罗马共和国转入帝国时代。
+9|china|4|王莽建立新朝，西汉政治秩序短暂中断。
+25|china|4|刘秀重建汉朝，东汉时代开始。
+70|italy|4|罗马军队攻陷耶路撒冷，犹太战争改变东地中海宗教格局。
+105|china|5|蔡伦改进造纸术，书写材料和知识传播方式发生深远变化。
+220|china|5|东汉灭亡，魏蜀吴三国格局形成。
+313|italy|5|米兰敕令承认基督教合法地位，罗马宗教政策发生转折。
+320|india|4|笈多王朝兴起，古典印度文化进入繁荣阶段。
+330|turkey|5|君士坦丁堡成为罗马帝国新都，东地中海政治中心重组。
+395|greece|4|罗马帝国东西分治，东罗马与西罗马走向不同历史轨迹。
+476|italy|5|西罗马皇帝被废，西欧古典帝国秩序终结。
+581|china|5|隋朝建立，南北长期分裂后的统一进程开启。
+589|china|5|隋灭陈统一中国，东亚大陆重归大一统王朝格局。
+610|arabia|5|穆罕默德开始传教，伊斯兰教在阿拉伯半岛兴起。
+618|china|5|唐朝建立，东亚进入开放而强盛的帝国时代。
+622|arabia|5|穆罕默德迁徙至麦地那，伊斯兰纪年和共同体政治开始。
+632|arabia|5|穆罕默德去世，阿拉伯扩张和哈里发时代随即展开。
+645|japan|4|大化改新开始，日本律令国家建设加速。
+661|arabia|4|倭马亚王朝建立，阿拉伯帝国进入世袭王朝阶段。
+710|japan|4|平城京建立，奈良时代开启，日本律令制度趋于成熟。
+751|china|4|怛罗斯战役爆发，唐与阿拔斯势力在中亚发生冲突。
+755|china|5|安史之乱爆发，唐帝国由盛转衰。
+800|france|5|查理曼被加冕为皇帝，西欧帝国理念重新出现。
+802|cambodia|4|阇耶跋摩二世建立吴哥王权，高棉帝国兴起。
+843|france|4|凡尔登条约分割加洛林帝国，西欧政治版图重组。
+907|china|4|唐朝灭亡，中国进入五代十国分裂时期。
+960|china|5|赵匡胤建立北宋，文官政治和商业社会进一步发展。
+962|germany|5|奥托一世加冕，神圣罗马帝国传统形成。
+987|france|4|卡佩王朝建立，法国王权国家长期发展开始。
+1000|mexico|4|中美洲后古典时期多中心竞争，托尔特克传统影响扩大。
+1066|britain|5|诺曼征服英格兰，英格兰政治、语言和贵族结构改变。
+1095|france|5|第一次十字军运动发动，欧洲与东地中海关系剧烈变化。
+1127|china|5|靖康之变后北宋灭亡，南宋与金长期对峙。
+1185|japan|5|源赖朝建立镰仓幕府，日本武家政治开始。
+1206|mongolia|5|铁木真被推举为成吉思汗，蒙古帝国形成。
+1215|britain|5|《大宪章》签署，英格兰王权受到贵族和法律约束。
+1258|iraq|5|蒙古军攻陷巴格达，阿拔斯王朝中心被摧毁。
+1271|china|5|忽必烈建立元朝，蒙古帝国东部转化为中国王朝形态。
+1279|china|5|南宋灭亡，元朝完成对中国的统一。
+1299|turkey|5|奥斯曼政权兴起，安纳托利亚出现后来跨洲帝国的起点。
+1324|mali|5|曼萨·穆萨前往麦加朝觐，马里帝国财富震动伊斯兰世界。
+1336|japan|4|室町幕府建立，日本进入足利氏主导的武家政治阶段。
+1347|italy|5|黑死病传入欧洲，人口、经济和宗教社会受到巨大冲击。
+1368|china|5|朱元璋建立明朝，元朝在中国的统治结束。
+1405|china|4|郑和首次下西洋，明朝展开大规模海上外交。
+1438|peru|5|帕查库特克即位后推动印加帝国迅速扩张。
+1453|turkey|5|奥斯曼攻占君士坦丁堡，拜占庭帝国终结。
+1492|mexico|5|哥伦布抵达美洲，欧洲跨大西洋扩张由此展开。
+1517|germany|5|马丁·路德发表九十五条论纲，宗教改革开始。
+1521|mexico|5|西班牙攻陷特诺奇蒂特兰，阿兹特克帝国灭亡。
+1526|india|5|巴布尔建立莫卧儿帝国，南亚进入近世帝国阶段。
+1533|peru|5|西班牙征服库斯科，印加帝国核心被殖民力量摧毁。
+1588|britain|5|英格兰击败西班牙无敌舰队，海权格局发生转折。
+1600|britain|4|英国东印度公司成立，全球贸易和殖民网络扩展。
+1603|japan|5|德川家康建立江户幕府，日本进入长期稳定的幕藩体制。
+1618|germany|5|三十年战争爆发，中欧政治和宗教格局被深刻重塑。
+1644|china|5|明朝灭亡，清军入关，中国进入清朝统治时期。
+1687|britain|5|牛顿出版《自然哲学的数学原理》，近代科学体系成形。
+1721|russia|5|彼得大帝称帝，俄罗斯帝国正式形成并成为欧洲强国。
+1760|britain|5|工业革命在英国逐步展开，生产方式和全球经济结构改变。
+1776|usa|5|美国《独立宣言》发表，北美殖民地走向独立国家。
+1789|france|5|法国大革命爆发，欧洲政治和现代公民观念发生剧变。
+1804|france|5|拿破仑称帝，法国革命后的欧洲战争与制度输出进入高潮。
+1839|china|5|鸦片战争爆发，中国被卷入近代世界体系冲击。
+1858|india|5|英属印度正式建立，英国殖民统治进入直接管辖阶段。
+1861|usa|5|美国南北战争爆发，奴隶制与联邦统一问题进入决战。
+1868|japan|5|明治维新开启，日本快速转向近代国家和工业化道路。
+1871|germany|5|德意志帝国成立，欧洲大陆权力格局改变。
+1911|china|5|辛亥革命爆发，清朝帝制走向终结。
+1914|germany|5|第一次世界大战爆发，全球帝国秩序进入危机。
+1917|russia|5|俄国革命爆发，世界社会主义运动和20世纪政治格局改变。
+1929|usa|5|华尔街股灾引发大萧条，全球经济和政治受到冲击。
+1939|germany|5|第二次世界大战爆发，人类历史进入全球性战争阶段。
+1945|usa|5|第二次世界大战结束，联合国成立并开启冷战格局。
+1947|india|5|印度独立，南亚殖民统治结束并发生印巴分治。
+1949|china|5|中华人民共和国成立，中国现代国家进程进入新阶段。
+1969|usa|5|阿波罗11号登月，人类首次踏上月球。
+1978|china|5|中国改革开放启动，经济和社会结构进入长期转型。
+1991|russia|5|苏联解体，冷战结束后的国际秩序重组。
+2001|usa|5|九一一事件发生，全球安全格局和国际政治议程改变。
+`;
+const events=eventRows.trim().split('\n').filter(Boolean).map(line=>{const [year,country,importance,text]=line.split('|');return{year:Number(year),country,importance:Number(importance),text}});
+function eventWindow(){return zoomWindow>=4000?80:zoomWindow>=1500?50:zoomWindow>=500?20:zoomWindow>=100?10:5}
+function eventYear(y){if(currentLang==='en')return y<0?`${Math.abs(y)} BCE`:`${y} CE`;return y<0?`前${Math.abs(y)}年`:`${y}年`}
+function nearbyEvents(){const w=eventWindow();const sorted=events.filter(e=>!hidden.has(e.country)&&Math.abs(e.year-currentYear)<=w&&colIndex(e.country)>=0).sort((a,b)=>b.importance-a.importance||Math.abs(a.year-currentYear)-Math.abs(b.year-currentYear));const picked=[],used=new Set();for(const e of sorted){if(used.has(e.country))continue;picked.push(e);used.add(e.country);if(picked.length>=4)break}return picked}
+function eventTextEn(e){const templates={china:'A major turning point reshaped Chinese political order and imperial history.',japan:'A major transition reshaped Japanese political and cultural life.',korea:'A major development changed the history of the Korean Peninsula.',mongolia:'A major steppe event reshaped Inner Asian power.',india:'A major South Asian event reshaped empire, religion, or society.',iraq:'A major Mesopotamian event reshaped early statecraft and law.',iran:'A major Iranian event reshaped imperial power in West Asia.',arabia:'A major event in Arabia reshaped religious and political history.',turkey:'A major Anatolian or Ottoman event reshaped Eurasian politics.',egypt:'A major Nile Valley event reshaped ancient Egyptian civilization.',greece:'A major Greek event reshaped the Mediterranean world.',italy:'A major Roman or Italian event reshaped Mediterranean history.',france:'A major French or Western European event reshaped politics and society.',britain:'A major British event reshaped law, empire, science, or global power.',germany:'A major Central European event reshaped religion, war, or state formation.',russia:'A major Russian event reshaped Eastern Europe and Eurasia.',mali:'A major West African event reshaped trade, religion, and imperial history.',mexico:'A major Mesoamerican event reshaped civilization and colonial history.',peru:'A major Andean event reshaped imperial and colonial history.',usa:'A major North American event reshaped modern global history.'};return templates[e.country]||'A major historical event occurred in this period.'}
+function renderEvents(){eventLayer.innerHTML='';const evs=nearbyEvents();if(!evs.length)return;const lineY=yOf(currentYear);const above=lineY>chart.clientHeight-130;evs.forEach((e)=>{const col=colIndex(e.country);if(col<0)return;const card=document.createElement('div');card.className='eventCard';card.style.left=`calc(var(--leftAxis) + ${col} * var(--colW) + 8px)`;card.style.top=(lineY+(above?-70:5))+'px';card.style.width='calc(2 * var(--colW) - 16px)';card.innerHTML=`<div class="eventYear">${eventYear(e.year)}</div><div class="eventText">${currentLang==='en'?eventTextEn(e):e.text}</div>`;eventLayer.appendChild(card)})}
+
+function snap(y){return Math.round(y/10)*10}function fmt(y){if(currentLang==='en')return y<0?`${Math.abs(y)} BCE`:`${y} CE`;return y<0?`公元前${Math.abs(y)}年前后`:`公元${y}年前后`}function topPad(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topPad'))}function yOf(year){return topPad()+(snap(year)-MIN)*pxPerYear}function yearOfY(y){return Math.max(MIN,Math.min(MAX,snap(MIN+(y-topPad())/pxPerYear)))}function colIndex(id){return visibleCountries().findIndex(c=>c.id===id)}
+function allSegments(){const arr=[];civilizations.forEach(c=>c.segments.forEach((s,i)=>arr.push({...s,civ:c.name,civId:c.id,color:s.color||c.color,segIndex:i})));return arr}function updateZoomFromSlider(){zoomWindow=Number(document.getElementById('zoomSlider').value);pxPerYear=Math.max(.13,Math.min(6,650/zoomWindow));document.getElementById('zoomLabel').textContent=zoomWindow+'年';render()}function resetView(){hidden=new Set(defaultHiddenCountries);currentYear=-500;searchTerm='';activeSegmentLabel=null;activeFigure=null;document.getElementById('search').value='';document.getElementById('zoomSlider').value=2000;updateZoomFromSlider();scrollEl.scrollTop=Math.max(0,yOf(currentYear)-260)}
+function renderRegions(){regionsEl.innerHTML=regions.map(g=>{const cs=g.countries.filter(c=>!hidden.has(c.id));if(!cs.length)return '';const gName=currentLang==='en'?(regionEn[g.id]||g.name):g.name;return `<div class="regionGroup" style="width:calc(${cs.length} * var(--colW))"><div class="regionBand" onclick="hideRegionGroup('${g.id}')">${gName}</div><div class="countryRow">${cs.map(c=>{const cName=currentLang==='en'?(countryEn[c.id]||c.name):(c.display||c.name);return `<div class="region" onclick="event.stopPropagation();hideRegion('${c.id}')"><em>${currentLang==='en'?'Hide':'隐藏'}</em>${c.display&&currentLang==='zh'?`<b>${c.display}</b>`:`<span class="flag">${c.flag||'◇'}</span><b>${cName}</b>`}</div>`}).join('')}</div></div>`}).join('');document.documentElement.style.setProperty('--visibleCols',visibleCountries().length)}
+function hideRegion(id){hidden.add(id);render()}function hideRegionGroup(id){const g=regions.find(r=>r.id===id);if(g){g.countries.forEach(c=>hidden.add(c.id));render()}}function restoreRegion(id){hidden.delete(id);render()}function toggleHiddenMenu(){document.getElementById('hiddenMenu').classList.toggle('open')}function renderHidden(){document.getElementById('hiddenCount').textContent=hidden.size;const panel=document.getElementById('hiddenPanel');panel.innerHTML=hidden.size?[...hidden].map(id=>`<div class="hiddenItem" onclick="restoreRegion('${id}')"><span>${countryName(id)}</span><b>恢复</b></div>`).join('')+`<div class="hiddenItem" onclick="hidden.clear();render()"><span>全部恢复</span><b>↺</b></div>`:'<div class="hiddenItem"><span>暂无隐藏国家</span></div>'}
+function renderAxis(){axis.innerHTML='';const step=zoomWindow<=100?50:zoomWindow<=500?100:zoomWindow<=1500?250:500;for(let y=MIN;y<=MAX;y+=step){const t=document.createElement('div');t.className='tick';t.style.top=yOf(y)+'px';t.textContent=y<0?`前${Math.abs(y)}`:y;axis.appendChild(t)}}function layerRank(s){if(s.coverage)return 30;const span=new Set(s.columns).size;if(span>1)return 20;return 10}
+function renderBlocks(){blocksEl.innerHTML='';allSegments().sort((a,b)=>(a.start-b.start)||layerRank(a)-layerRank(b)||((b.end-b.start)-(a.end-a.start))).forEach(s=>{const indexes=[...new Set(s.columns.map(colIndex).filter(i=>i>=0))].sort((a,b)=>a-b);if(!indexes.length)return;const groups=[];let group=[indexes[0]];for(let i=1;i<indexes.length;i++){if(indexes[i]===indexes[i-1]+1)group.push(indexes[i]);else{groups.push(group);group=[indexes[i]]}}groups.push(group);const visible=visibleCountries();groups.forEach((g,part)=>{const min=g[0],max=g[g.length-1];const firstId=visible[min]?.id,lastId=visible[max]?.id;const firstCov=s.coverage?.[firstId]??1,lastCov=s.coverage?.[lastId]??1;const firstSide=s.coverageSide?.[firstId]||'center',lastSide=s.coverageSide?.[lastId]||'center';let leftExtra=0,rightExtra=0;if(firstCov<1){leftExtra=firstSide==='right'?(1-firstCov):firstSide==='center'?(1-firstCov)/2:0}if(lastCov<1&&max!==min){rightExtra=lastSide==='left'?(1-lastCov):lastSide==='center'?(1-lastCov)/2:0}if(max===min&&firstCov<1){leftExtra=firstSide==='right'?(1-firstCov):firstSide==='center'?(1-firstCov)/2:0;rightExtra=firstSide==='left'?(1-firstCov):firstSide==='center'?(1-firstCov)/2:0}const top=yOf(s.start),bottom=yOf(s.end),h=Math.max(20,bottom-top);const el=document.createElement('div');el.className='block';if(s.coverage)el.classList.add('partial');if((searchTerm&&(`${s.civ}${s.label}`).includes(searchTerm))||activeSegmentLabel===s.label)el.classList.add('hit');if(currentYear>=snap(s.start)&&currentYear<=snap(s.end))el.classList.add('activeAtYear');el.style.left=`calc(var(--leftAxis) + ${min + leftExtra} * var(--colW) + 8px)`;el.style.top=top+'px';el.style.width=`calc(${max-min+1-leftExtra-rightExtra} * var(--colW) - 16px)`;el.style.height=h+'px';el.style.zIndex=String(activeSegmentLabel===s.label?88:10+Math.round(((snap(s.start)-MIN)/(MAX-MIN))*60));el.style.background=`linear-gradient(135deg,${s.color},${s.color}cc)`;el.style.setProperty('--glow',s.color+'99');const suffix=groups.length>1?` <small>${part+1}/${groups.length}</small>`:'';el.innerHTML=`<div class="label">${segLabel(s.label)}${suffix}</div><div class="years">${dateRangeText(s.start,s.end)}</div>`;el.onclick=()=>{selected=s;activeFigure=null;activeSegmentLabel=s.label;currentYear=snap((s.start+s.end)/2);updateYearLine();scrollEl.scrollTop=Math.max(0,yOf(currentYear)-260);showDetail(s);toggleDrawer(true)};blocksEl.appendChild(el)})})}function render(){chart.style.height=yOf(MAX)+100+'px';renderRegions();renderAxis();renderBlocks();renderHidden();updateYearLine();updateActiveList()}function updateYearLine(){yearLine.style.top=yOf(currentYear)+'px';yearHandle.textContent=fmt(currentYear);document.getElementById('yearInput').value=currentYear;renderBlocks();updateActiveList();renderEvents();document.getElementById('floatInfo').textContent=`${fmt(currentYear)} · 拖动横切线查看同一时期文明`}function visibleColumnsOf(s){return s.columns.filter(c=>!hidden.has(c)&&colIndex(c)>=0)}function isCrossingYear(s){return currentYear>=snap(s.start)&&currentYear<=snap(s.end)}function detailText(s){if(currentLang==='zh'&&detailNotes[s.label])return detailNotes[s.label];if(currentLang==='en'){const loc=locationText(s);const label=segLabel(s.label);const polity=new Set(s.columns).size>1?'It involved cross-regional rule, migration, conquest, or imperial integration.':'It represents a major local dynasty, polity, or cultural phase.';return `${label} was an important historical phase. ${loc}. ${polity} Its approximate span was ${dateRangeText(s.start,s.end)}. It helps explain changes in political order, cultural exchange, institutions, urban life, or regional identity within the broader world history timeline.`}const loc=locationText(s);const polity=new Set(s.columns).size>1?'这一阶段涉及多个地区的政治控制、迁徙或帝国扩张':'这一阶段代表当地国家、王朝或文明传统的重要发展';const text=`${s.summary}${loc}。${polity}，时间大致为${cleanDate(s.start)}至${cleanDate(s.end)}。它在区域政治秩序、制度形成、文化交流或城市发展中具有代表性，可作为理解该地区历史连续性与变迁的关键节点。`;return text.length>330?text.slice(0,327)+'…':text}function updateActiveList(){const title=document.getElementById('activeList').previousElementSibling;if(activeFigure){title.textContent=currentLang==='en'?'Contemporary Historical Figures':'同时期历史人物';const peers=figures.filter(f=>f.name!==activeFigure.name&&f.start<=activeFigure.end&&f.end>=activeFigure.start).sort((a,b)=>a.start-b.start).slice(0,24);document.getElementById('activeList').innerHTML=peers.length?`<div class="empty">与 ${activeFigure.name} 生卒年代有重叠的代表人物。</div>`+peers.map(f=>`<div class="item" onclick="showFigureDetail(figures.find(x=>x.name==='${f.name}'))"><b>${f.name}</b><span>${figureCountry(f)} · ${f.segmentLabel} · ${cleanDate(f.start)}—${cleanDate(f.end)}</span></div>`).join(''):'<div class="empty">当前人物库中暂无同时期代表人物。</div>';return}title.textContent=currentLang==='en'?'Civilizations at this Time':'该时期存在的文明';const active=allSegments().filter(s=>isCrossingYear(s)&&visibleColumnsOf(s).length).sort((a,b)=>Math.min(...visibleColumnsOf(a).map(colIndex))-Math.min(...visibleColumnsOf(b).map(colIndex))||b.start-a.start);document.getElementById('activeList').innerHTML=active.length?`<div class="empty">${fmt(currentYear)} 横截面穿过 ${active.length} 个可见文明/政权阶段。</div>`+active.map(s=>`<div class="item"><b>${segLabel(s.label)}</b><span>${visibleColumnsOf(s).map(countryName).join(' / ')} · ${dateRangeText(s.start,s.end)}</span></div>`).join(''):'<div class="empty">该年份横截面没有穿过任何可见文明。可恢复隐藏国家或移动年份线。</div>'}function showDetail(s){document.getElementById('detail').innerHTML=`<div class="secTitle">${currentLang==='en'?'Civilization Detail':'文明详情'}</div><h2>${segLabel(s.label)}</h2><div class="meta">${segLabel(s.label)} · ${locationText(s)}<br>${dateRangeText(s.start,s.end)}</div><p class="desc">${detailText(s)}</p>`}function toggleDrawer(open){document.getElementById('drawer').classList.toggle('open',open)}function jumpYearFromInput(){const v=Number(document.getElementById('yearInput').value);if(!Number.isNaN(v)){currentYear=snap(v);updateYearLine();scrollEl.scrollTop=Math.max(0,yOf(currentYear)-260)}}let dragging=false;yearLine.addEventListener('mousedown',()=>dragging=true);window.addEventListener('mouseup',()=>dragging=false);scrollEl.addEventListener('mousemove',e=>{if(!dragging)return;const rect=chart.getBoundingClientRect();currentYear=yearOfY(e.clientY-rect.top);updateYearLine()});chart.addEventListener('dblclick',e=>{const rect=chart.getBoundingClientRect();currentYear=yearOfY(e.clientY-rect.top);updateYearLine()});function matchText(q,...parts){const text=parts.flat().filter(Boolean).join(' ').toLowerCase();return text.includes(q.toLowerCase())}
+function segmentByLabel(label){return allSegments().find(s=>s.label===label)}
+function revealColumns(cols){let changed=false;cols.forEach(c=>{if(hidden.has(c)){hidden.delete(c);changed=true}});if(changed)render()}
+function focusSegment(seg,year){if(!seg)return;revealColumns(seg.columns);activeSegmentLabel=seg.label;currentYear=snap(year??((seg.start+seg.end)/2));updateYearLine();scrollEl.scrollTop=Math.max(0,yOf(currentYear)-260);renderBlocks()}
+function showCivilizationDetail(seg){activeFigure=null;focusSegment(seg);showDetail(seg);updateActiveList();toggleDrawer(true)}
+function figureDisplayName(f){if(currentLang==='en'){const en=(f.aliases||[]).find(a=>/[A-Za-z]/.test(a));return en||f.name}return f.name}
+function figureIntro(f){if(currentLang==='en')return `${figureDisplayName(f)} was an important ${f.role||'historical figure'} associated with ${segLabel(f.segmentLabel)}. This figure is included as a representative person for understanding political power, ideas, arts, science, religion, or cultural change in this period.`;return f.intro}
+function figureCountry(f){const seg=segmentByLabel(f.segmentLabel);return seg?.columns?.[0]?countryName(seg.columns[0]):'—'}
+function showFigureDetail(f){activeFigure=f;const seg=segmentByLabel(f.segmentLabel);focusSegment(seg,f.active??((f.start+f.end)/2));document.getElementById('detail').innerHTML=`<div class="secTitle">${currentLang==='en'?'Figure Detail':'人物详情'}</div><h2>${figureDisplayName(f)}</h2><div class="meta">${figureDisplayName(f)} · ${segLabel(f.segmentLabel)} · ${currentLang==='en'?'Born in':'出生于'}${f.birthplace}<br>${dateRangeText(f.start,f.end)}</div><p class="desc">${figureIntro(f)}</p>`;updateActiveList();toggleDrawer(true)}
+function renderSearchPanel(q){const panel=document.getElementById('searchPanel');if(!q){panel.classList.remove('open');panel.innerHTML='';return}const civs=allSegments().filter(s=>matchText(q,s.label,s.civ,segLabel(s.label),civName(s.civ))).slice(0,10);const figs=figures.filter(f=>matchText(q,f.name,f.aliases,f.segmentLabel,figureDisplayName(f),segLabel(f.segmentLabel))).slice(0,10);searchResults=[...civs.map(x=>({type:'civ',data:x})),...figs.map(x=>({type:'figure',data:x}))];if(!searchResults.length){panel.classList.add('open');panel.innerHTML=`<div class="empty">${currentLang==='en'?'No civilizations or historical figures found.':'没有找到文明或历史人物。'}</div>`;return}let html='';if(civs.length){html+=`<div class="resultGroup">${currentLang==='en'?'Civilizations':'文明'}</div>`+civs.map((r,i)=>`<div class="resultItem" onclick="selectSearchResult(${i})"><b>${segLabel(r.label)}</b><span>${civName(r.civ)} · ${dateRangeText(r.start,r.end)}</span></div>`).join('')}if(figs.length){const offset=civs.length;html+=`<div class="resultGroup">${currentLang==='en'?'Historical Figures':'历史人物'}</div>`+figs.map((r,i)=>`<div class="resultItem" onclick="selectSearchResult(${offset+i})"><b>${figureDisplayName(r)}</b><span>${segLabel(r.segmentLabel)} · ${currentLang==='en'?'Born in':'出生于'}${r.birthplace} · ${dateRangeText(r.start,r.end)}</span></div>`).join('')}panel.classList.add('open');panel.innerHTML=html}
+function selectSearchResult(i){const r=searchResults[i];document.getElementById('searchPanel').classList.remove('open');if(!r)return;if(r.type==='civ')showCivilizationDetail(r.data);else showFigureDetail(r.data)}
+document.getElementById('search').addEventListener('input',e=>{searchTerm=e.target.value.trim();activeSegmentLabel=null;renderSearchPanel(searchTerm);renderBlocks();const exact=figures.find(f=>searchTerm&&(f.name===searchTerm||f.aliases?.includes(searchTerm)));if(exact)showFigureDetail(exact)});
+const i18n={zh:{title:'文明行旅',subtitle:'在一张图中观察 5000 年文明的并行、扩张与更替',search:'搜索文明/历史人物：罗马 / 汉朝 / 孔子',view:'视野',hidden:'隐藏国家 ',detail:'详情',drawer:'文明详情与同期横切',close:'关闭'},en:{title:'CivVoyage',subtitle:'Journey across civilizations through time and place',search:'Search civilizations/figures: Rome / Han / Confucius',view:'Scale',hidden:'Hidden ',detail:'Details',drawer:'Civilization & Timeline Context',close:'Close'}};
+
+let currentLang=localStorage.getItem('civLang')||'zh';
+const regionEn={east_asia:'East Asia',inner_asia:'Inner Asian Steppe',southeast_asia:'Southeast Asia',south_asia:'South Asia',central_asia_region:'Central Asia',middle_east:'Middle East / West Asia',north_africa:'North Africa',europe:'Europe',africa:'Africa',americas:'Americas'};
+const countryEn={japan:'Japan',korea:'Korea',china:'China',mongolia:'Mongolia',vietnam:'Vietnam',cambodia:'Cambodia',indonesia:'Indonesia',india:'India',central_asia:'Central Asia',iran:'Iran',iraq:'Iraq',turkey:'Turkey',arabia:'Arabia',egypt:'Egypt',greece:'Greece',italy:'Italy',france:'France',britain:'Britain',germany:'Germany',russia:'Russia',ethiopia:'Ethiopia',mali:'Mali',mexico:'Mexico',peru:'Peru',usa:'United States'};
+const geoNamesEn={japan:'the Japanese archipelago',korea:'the Korean Peninsula',china:'China and the East Asian mainland',mongolia:'the eastern Eurasian steppe',vietnam:'Vietnam and eastern Mainland Southeast Asia',cambodia:'Cambodia and the Mekong basin',indonesia:'the Indonesian archipelago and maritime Southeast Asia',india:'the Indian subcontinent',central_asia:'Central Asian Transoxiana and oasis-steppe zones',iran:'the Iranian Plateau',iraq:'Mesopotamia, around present-day Iraq',turkey:'Anatolia and Asia Minor',arabia:'the Arabian Peninsula',egypt:'the Nile Valley and Egypt',greece:'Greece and the Aegean world',italy:'the Italian Peninsula',france:'the Frankish and French lands of Western Europe',britain:'the British Isles',germany:'the German lands of Central Europe',russia:'Eastern Europe and the Russian plain',ethiopia:'the Ethiopian highlands',mali:'the Niger River basin of West Africa',mexico:'Mesoamerica and the Mexican plateau',peru:'the Andes',usa:'North America'};
+const segmentEn={
+'夏朝':'Xia Dynasty','商朝':'Shang Dynasty','西周':'Western Zhou','春秋':'Spring and Autumn Period','战国':'Warring States Period','秦朝':'Qin Dynasty','西汉':'Western Han','新朝':'Xin Dynasty','东汉':'Eastern Han','三国':'Three Kingdoms','西晋':'Western Jin','东晋十六国':'Eastern Jin and Sixteen Kingdoms','南北朝':'Northern and Southern Dynasties','隋朝':'Sui Dynasty','唐朝':'Tang Dynasty','五代十国':'Five Dynasties and Ten Kingdoms','辽':'Liao Dynasty','北宋':'Northern Song','西夏':'Western Xia','金':'Jin Dynasty','南宋':'Southern Song','元朝':'Yuan Dynasty','明朝':'Ming Dynasty','清朝':'Qing Dynasty','中华民国':'Republic of China','中华人民共和国':'People’s Republic of China',
+'弥生时代':'Yayoi Period','古坟时代':'Kofun Period','飞鸟时代':'Asuka Period','奈良时代':'Nara Period','平安时代':'Heian Period','镰仓幕府':'Kamakura Shogunate','室町幕府':'Muromachi Shogunate','战国安土桃山':'Sengoku–Azuchi-Momoyama','江户幕府':'Edo Shogunate','明治日本':'Meiji Japan','近现代日本':'Modern Japan','三国时代':'Three Kingdoms of Korea','统一新罗/渤海':'Unified Silla / Balhae','高丽王朝':'Goryeo Dynasty','朝鲜王朝':'Joseon Dynasty','大韩帝国/殖民期':'Korean Empire / Colonial Period','现代朝韩':'Modern Korea',
+'米诺斯文明':'Minoan Civilization','迈锡尼文明':'Mycenaean Civilization','古希腊城邦':'Greek City-States','马其顿帝国':'Macedonian Empire','希腊化诸国':'Hellenistic Kingdoms','罗马共和国':'Roman Republic','罗马帝国':'Roman Empire','西罗马帝国':'Western Roman Empire','拜占庭帝国':'Byzantine Empire',
+'苏美尔城邦':'Sumerian City-States','阿卡德帝国':'Akkadian Empire','古巴比伦':'Old Babylonian Kingdom','赫梯帝国':'Hittite Empire','亚述帝国':'Assyrian Empire','新巴比伦':'Neo-Babylonian Empire','阿契美尼德波斯':'Achaemenid Persia','帕提亚帝国':'Parthian Empire','萨珊波斯':'Sasanian Persia','阿拉伯帝国':'Arab Caliphates','塞尔柱帝国':'Seljuk Empire','奥斯曼帝国':'Ottoman Empire',
+'印度河文明':'Indus Valley Civilization','吠陀时期':'Vedic Period','十六大国':'Mahajanapadas','孔雀王朝':'Maurya Empire','贵霜帝国':'Kushan Empire','笈多王朝':'Gupta Empire','戒日王朝':'Harsha’s Kingdom','德里苏丹国':'Delhi Sultanate','莫卧儿帝国':'Mughal Empire','英属印度':'British India',
+'斯基泰':'Scythians','匈奴':'Xiongnu','鲜卑与柔然':'Xianbei and Rouran','突厥汗国':'Turkic Khaganate','回鹘汗国':'Uyghur Khaganate','契丹辽':'Khitan Liao','蒙古帝国':'Mongol Empire','金帐汗国':'Golden Horde',
+'凯尔特与日耳曼部族':'Celtic and Germanic Peoples','法兰克王国':'Frankish Kingdom','加洛林帝国':'Carolingian Empire','英格兰王国':'Kingdom of England','基辅罗斯':'Kievan Rus’','莫斯科公国':'Grand Duchy of Moscow','俄罗斯沙皇国':'Tsardom of Russia','神圣罗马帝国':'Holy Roman Empire','法国王权国家':'French Monarchy','英国/大不列颠':'Britain / Great Britain','西属/葡属美洲':'Spanish / Portuguese America','大英帝国本土':'British Empire Core','俄罗斯帝国':'Russian Empire',
+'古埃及':'Ancient Egypt','库施王国':'Kingdom of Kush','迦太基':'Carthage','阿克苏姆':'Aksum','加纳帝国':'Ghana Empire','马里帝国':'Mali Empire','桑海帝国':'Songhai Empire','埃塞俄比亚帝国':'Ethiopian Empire',
+'奥尔梅克文明':'Olmec Civilization','玛雅文明':'Maya Civilization','特奥蒂瓦坎':'Teotihuacan','托尔特克':'Toltec','阿兹特克帝国':'Aztec Empire','新西班牙':'New Spain','墨西哥':'Mexico','查文文化':'Chavín Culture','莫切/纳斯卡':'Moche / Nazca','瓦里/蒂亚瓦纳科':'Wari / Tiwanaku','印加帝国':'Inca Empire','秘鲁殖民地':'Colonial Peru','秘鲁':'Peru','殖民北美':'Colonial North America','美国':'United States',
+'扶南':'Funan','真腊':'Chenla','高棉帝国':'Khmer Empire','室利佛逝':'Srivijaya','蒲甘王朝':'Pagan Kingdom','大越':'Dai Viet','暹罗王国':'Siamese Kingdom','满者伯夷':'Majapahit'
+};
+function L(zh,en){return currentLang==='en'?en:zh}
+function segLabel(label){return currentLang==='en'?(segmentEn[label]||label):label}
+function civName(name){return currentLang==='en'?({'中华文明':'Chinese Civilization','日本与朝鲜':'Japan and Korea','罗马与地中海':'Rome and the Mediterranean','两河波斯与伊斯兰':'Mesopotamia, Persia and Islam','南亚文明':'South Asian Civilization','内亚草原':'Inner Asian Steppe','欧洲中世纪与近代':'Medieval and Early Modern Europe','非洲文明':'African Civilizations','美洲文明':'American Civilizations','东南亚文明':'Southeast Asian Civilizations'}[name]||name):name}
+function cleanDate(y){return currentLang==='en'?fmt(y):fmt(y).replace('前后','')}
+function dateRangeText(a,b){return `${cleanDate(a)} ${currentLang==='en'?'to':'至'} ${cleanDate(b)}`}
+function setLang(lang){currentLang=lang;const t=i18n[lang]||i18n.zh;document.getElementById('appTitle').textContent=t.title;document.getElementById('appSubtitle').textContent=t.subtitle;document.getElementById('search').placeholder=t.search;document.querySelector('.zoomControl span').textContent=t.view;document.querySelector('#hiddenMenu button').childNodes[0].textContent=t.hidden;document.querySelector('.drawerTab').textContent=t.detail;document.querySelector('.drawerHead b').textContent=t.drawer;document.querySelector('.drawerHead button').textContent=t.close;localStorage.setItem('civLang',lang);render()}
+document.getElementById('langSelect').addEventListener('change',e=>setLang(e.target.value));const savedLang=localStorage.getItem('civLang')||'zh';document.getElementById('langSelect').value=savedLang;setLang(savedLang);
+document.addEventListener('click',e=>{if(!e.target.closest('.searchPanel')&&e.target.id!=='search')document.getElementById('searchPanel').classList.remove('open')});document.getElementById('zoomSlider').addEventListener('input',updateZoomFromSlider);hidden=new Set(defaultHiddenCountries);updateZoomFromSlider();scrollEl.scrollTop=Math.max(0,yOf(currentYear)-260);
+</script>
+</body>
+</html>
