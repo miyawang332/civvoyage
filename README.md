@@ -12,6 +12,7 @@
   <a href="#features">Features</a> ·
   <a href="#screenshots">Screenshots</a> ·
   <a href="#quick-start">Quick Start</a> ·
+  <a href="#online-access">Online Access</a> ·
   <a href="#deployment">Deployment</a> ·
   <a href="#roadmap">Roadmap</a>
 </p>
@@ -145,6 +146,16 @@ civilization-timeline/
         ├── overview.png
         ├── search-and-detail.png
         └── events-and-figures.png
+```
+
+---
+
+## Online Access
+
+Visit CivVoyage online:
+
+```text
+https://miyawang332.github.io/civvoyage/
 ```
 
 ---
